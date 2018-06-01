@@ -1,6 +1,11 @@
 <template>
-  <div class="Me">
-    <h1>{{ msg }}</h1>
+  <!--<div class="Me" style="position: relative;">-->
+  <div class="Me" style="position: fixed; left: 8%; ">
+    <div style="margin-top: 180px">
+      <h3>{{name}}</h3>
+      <span>{{email}}</span>
+    </div>
+    <router-link to="/"><img style="margin-top: 100px;" src="./../assets/GitHub-Mark-32px.png" @click="jump_github()"/></router-link>
   </div>
 </template>
 
@@ -9,7 +14,13 @@
     name: 'Me',
     data() {
       return {
-        msg: 'fgd'
+        name: 'fgd',
+        email: 'f_gd@foxmail.com'
+      }
+    },
+    methods:{
+      jump_github: function () {
+        window.location.href = 'https://github.com/fgd-haha/';
       }
     }
   }

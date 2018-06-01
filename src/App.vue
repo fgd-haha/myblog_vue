@@ -1,26 +1,14 @@
 <template>
   <div id="app">
-    <!--<div class="left">-->
-      <!--<Me></Me>-->
-    <!--</div>-->
-    <!--<div class="main">-->
-      <!--<div class="top">-->
-        <!--<Top></Top>-->
-      <!--</div>-->
-      <!--<div class="down">-->
-        <!--<router-view></router-view>-->
-      <!--</div>-->
-
-    <!--</div>-->
     <el-container>
-      <el-aside width="200px">
+      <el-aside width="20%">
         <Me></Me>
       </el-aside>
       <el-container>
         <el-header>
           <Top></Top>
         </el-header>
-        <el-main>
+        <el-main style="width: 75%">
           <router-view></router-view>
         </el-main>
       </el-container>
@@ -52,56 +40,25 @@
     margin: 0px;
     padding: 0px;
   }
-
-  /*.left{*/
-    /*color:#fff;*/
-    /*font-size:10px;*/
-    /*height:100%;*/
-    /*background-color: #1D8ce0;*/
-    /*float:left;*/
-    /*width:20%;*/
-  /*}*/
-  /*.main {*/
-    /*!*float: left;*!*/
-    /*width: 80%;*/
-    /*background-color: #EFF2F7;*/
-    /*height: 100%;*/
-    /*overflow: auto;*/
-  /*}*/
-
-  /*.top{*/
-    /*float: left;*/
-    /*width: 100%;*/
-    /*background-color: #EFF2F7;*/
-    /*height: 5%;*/
-    /*overflow: auto;*/
-  /*}*/
-  /*.down{*/
-    /*float: left;*/
-    /*width: 95%;*/
-    /*background-color: #EFF2F7;*/
-    /*height: 100%;*/
-    /*overflow: auto;*/
-  /*}*/
   .el-header, .el-footer {
-    background-color: #B3C0D1;
+    background-color: #fff;
     color: #333;
-    text-align: center;
+    text-align: right;
     line-height: 60px;
   }
 
   .el-aside {
-    background-color: #D3DCE6;
+    background-color: #fff;
     color: #333;
     text-align: center;
-    line-height: 200px;
+    /*line-height: 200px;*/
   }
 
   .el-main {
-    background-color: #E9EEF3;
+    background-color: #fff;;
     color: #333;
-    text-align: center;
-    line-height: 160px;
+    text-align: left;
+    /*line-height: 50px;*/
   }
 
   body > .el-container {

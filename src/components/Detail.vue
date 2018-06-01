@@ -1,24 +1,51 @@
 <template>
-  <div class="detail">
-    <!--<vue-markdown :source="title"></vue-markdown>-->
-    <!--<vue-markdown>{{guest.nick}}</vue-markdown>-->
-    <vue-markdown>
-    </vue-markdown>
-    <vue-markdown :source="content"></vue-markdown>
+  <div ref="page" class="detail" style="width: 80%; margin-left:auto; margin-right: auto;">
+    <!--博客时间，阅读，评论数-->
+    <el-row type="flex" justify="end" style="margin-bottom: 50px; margin-top: 50px">
+      <i class="el-icon-date" style="margin-top: 2px"></i>&nbsp{{this.article.create_time}}&nbsp&nbsp
+      <i class="el-icon-view" style="margin-top: 2px"></i>&nbsp{{this.article.click_nums}}&nbsp&nbsp
+      <icon name="comments2" :scale="1.5" style="margin-top: 3px"></icon>
+      &nbsp{{this.comments_num}}
+    </el-row>
+
+    <!--博客主体-->
+    <!--<vue-markdown :source="article.content" style="font-size: small;" v-highlight></vue-markdown>-->
 
     <!--评论框-->
-    <el-input
-      type="textarea"
-      :autosize="{ minRows: 2, maxRows: 4}"
-      placeholder="评论："
-      v-model="textarea3">
-    </el-input>
-    <vue-markdown :source="textarea3"></vue-markdown>
-    <!--评论按钮-->
-    <el-row>
-      <el-button @click="add_a_comment()" type="primary" icon="el-icon-edit" circle>评论</el-button>
-      <!--nick: {{this.guest.uid}} {{this.$route.path}}-->
-    </el-row>
+    <div style="margin-top: 20%; margin-bottom: 10%;">
+      <!--评论框-->
+      <el-row>
+        <el-col :span="12">
+          <el-input id="comment_textarea"
+                    class="textarea"
+                    type="textarea"
+                    :autosize="{ minRows: 5, maxRows: 40}"
+                    placeholder="写下你的评论。。。
+新手上路，多多指教（支持markdown哦）"
+                    v-model.lazy="textarea_comment_1" @input="update_textarea()"
+                    auto-complete="true"
+                    @focus="display_comment_block()"
+          >
+          </el-input>
+        </el-col>
+        <el-col :span="11" offset="1">
+          <vue-markdown v-highlight :source="textarea_comment_2"></vue-markdown>
+        </el-col>
+      </el-row>
+
+
+      <!--评论按钮-->
+      <div id="comment_block" style="display:none;">
+        <el-row>
+          <el-col :span="2" :offset="18">
+            <el-button @click="cancle_comment()" type="text" icon="el-icon-close" round size="mini">取消</el-button>
+          </el-col>
+          <el-col :span="2" :offset="1">
+            <el-button @click="add_a_comment()" type="success" icon="el-icon-check" round size="mini">发布</el-button>
+          </el-col>
+        </el-row>
+      </div>
+    </div>
 
     <!--登录按钮-->
     <!--<el-row>-->
@@ -27,47 +54,150 @@
     <!--&lt;!&ndash;guest:{{guest.nick}}&#45;&#45;{{guest.token}}&ndash;&gt;-->
     <!--&lt;!&ndash;code:{{this.code}}&ndash;&gt;-->
     <!--&lt;!&ndash;url:{{this.login_url}}&ndash;&gt;-->
-    <!--&lt;!&ndash;textarea: {{textarea3}}&ndash;&gt;-->
+    <!--&lt;!&ndash;textarea: {{textarea_comment_1}}&ndash;&gt;-->
     <!--</el-row>-->
 
-    <h1 v-for="comment in this.comments">
-      <el-row class="row-bg">
-        <el-col :span="2">
-          <img :class="{ full: fullWidthImage }" @click="fullWidthImage = !fullWidthImage" :src=comment.author.avatar>
-        </el-col>
-        <el-col :span="16">
-          <div class="grid-content bg-purple">{{comment.author.nick}}:{{comment.content}}</div>
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content bg-purple-light">{{comment.create_time}}</div>
-        </el-col>
+    <!--评论列表-->
+    <el-row type="flex" justify="space-between">
+      <el-col style="font-size: medium; font-weight: 600">
+        {{this.comments_num}}条评论/{{this.comment_guest_num}}人参与评论
+      </el-col>
+      <el-col :span="8">
+        <el-button class="button" type="text" @click="comment_reverse(true)">按时间正序</el-button>
+        <el-button class="button" type="text" @click="comment_reverse(false)">按时间倒序</el-button>
+      </el-col>
+    </el-row>
+    <el-row v-for="comment in this.article.comments" style="margin-bottom: 0">
+      <div style="margin: 0 6px 10px 6px;border-top:1px dotted #C0C0C0;"></div>
+      <!--图片-->
+      <el-col :span="2" :offset="1">
+        <el-popover
+          placement="right"
+          trigger="click">
+          <img :src=comment.author.avatar>
+          <img :src=comment.author.avatar width="50px" slot="reference">
+        </el-popover>
+      </el-col>
+      <!--评论-->
+      <el-col :span="21">
+        <!--昵称-->
+        <el-row style="color:#909399;">{{comment.author.nick}}</el-row>
+        <!--评论内容-->
+        <el-row style="font-size: small; margin: 0;">
+          <vue-markdown v-highlight :source="comment.content"></vue-markdown>
+        </el-row>
+        <!--评论时间，回复按钮-->
+        <el-row style="margin-bottom: 0; color: #909399">
+          {{comment.create_time.replace(/T/, ' ').replace(/-/g, '.').substr(0, 19)}} ·
+          <el-popover placement="right" trigger="click" width="1000">
+            <el-button type="text" icon="el-icon-edit"
+                       @click="update_reply_data(comment.id, comment.author.uid, comment.author.nick, 1, comment.comment_reply)"
+                       style="color:#909399"
+                       slot="reference">回复
+            </el-button>
 
-        <el-dialog :visible.sync="dialogFormVisible">
-          <el-form :model="form">
-            <el-form-item label="回复" :label-width="formLabelWidth">
-              <el-input v-model="textarea4" auto-complete="off"></el-input>
-            </el-form-item>
-          </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="quxiao">取 消</el-button>
-            <el-button type="primary" @click="queding()">确 定</el-button>
-          </div>
-        </el-dialog>
-        <el-col>
-          <el-button type="text" @click="showToggle(comment.id, comment.author.uid, 1, comment.comment_reply)">回复
-          </el-button>
-        </el-col>
-      </el-row>
-      <el-row v-for="reply in comment.comment_reply">
-        <el-col>{{reply.author.nick}}@{{reply.to.nick}}: {{reply.content}}</el-col>
-        <el-col>
-          <el-button type="text" @click="showToggle(comment.id, reply.to.uid, 1, comment.comment_reply)">回复</el-button>
-          <!--<button @click="showToggle(comment, comment.comment_reply)">回复</button>-->
-        </el-col>
-      </el-row>
+            <div id="reply_block">
+              <el-row style="margin-bottom: 0">
+                <el-col :span="12">
+                  <el-input type="textarea"
+                            :autosize="{ minRows: 5, maxRows: 40}"
+                            placeholder="写下你的评论。。。
+新手上路，多多指教（支持markdown哦）"
+                            v-model.lazy="textarea_reply_1" @input="update_textarea()"
+                            auto-complete="true"
+                            autofocus="true"
+                            style="background-color: #f7f7f7"
+                  >
+                  </el-input>
+                </el-col>
+                <el-col :span="11" offset="1">
+                  <vue-markdown v-highlight :source="textarea_reply_2"></vue-markdown>
+                </el-col>
+              </el-row>
+              <el-row style="margin-bottom: 0; margin-top: 0">
+                <el-col :span="2" :offset="18">
+                  <el-button @click="quxiao()" @click.native.prevent="$refs.page.click()" type="text"
+                             icon="el-icon-close" round size="mini">取消
+                  </el-button>
+                </el-col>
+                <el-col :span="2" :offset="1">
+                  <el-button @click="queding()" @click.native.prevent="$refs.page.click()" type="success"
+                             icon="el-icon-check" round size="mini">发布
+                  </el-button>
+                </el-col>
+              </el-row>
+            </div>
+          </el-popover>
+        </el-row>
+        <!--回复-->
+        <el-row v-for="reply in comment.comment_reply" style="margin-bottom: 0">
+          <!--线-->
+          <div style="margin: 0 6px 10px 6px;border-top:1px dotted #C0C0C0;"></div>
+          <!--头像-->
+          <el-col :span="2">
+            <el-popover
+              placement="right"
+              trigger="click">
+              <img :src=reply.author.avatar>
+              <img :src=reply.author.avatar width="50px" slot="reference">
+            </el-popover>
+          </el-col>
 
-    </h1>
+          <el-col :span="22">
+            <!--昵称-->
+            <el-row>
+              <span style="color: #909399">{{reply.author.nick}}</span>
+              <icon name="review" :scale="2"></icon>
+              <span style="color: #909399">{{reply.to.nick}}</span>
+            </el-row>
+            <!--回复内容-->
+            <el-row style="font-size: small; margin: 0">{{reply.content}}</el-row>
+            <!--回复时间,按钮-->
+            <el-row style="margin-bottom: 0; color: #909399;">
+              {{reply.create_time.replace('T', ' ').replace(/-/g, '.').substr(0, 19)}} ·
+              <el-popover placement="right" trigger="click" width="1000">
+                <el-button type="text" icon="el-icon-edit"
+                           @click="update_reply_data(comment.id, reply.to.uid, reply.to.nick, 1, comment.comment_reply)"
+                           style="color:#909399"
+                           slot="reference">回复
+                </el-button>
 
+                <div>
+                  <el-row>
+                    <el-col :span="12">
+                      <el-input type="textarea"
+                                :autosize="{ minRows: 5, maxRows: 40}"
+                                placeholder="写下你的评论。。。
+新手上路，多多指教（支持markdown哦）"
+                                v-model.lazy="textarea_reply_1" @input="update_textarea()"
+                                auto-complete="true"
+                                autofocus="true"
+                      >
+                      </el-input>
+                    </el-col>
+                    <el-col :span="11" offset="1">
+                      <vue-markdown v-highlight :source="textarea_reply_2"></vue-markdown>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="2" :offset="18">
+                      <el-button @click.native.prevent="$refs.page.click()" @click="quxiao()" type="text"
+                                 icon="el-icon-close" round size="mini">取消
+                      </el-button>
+                    </el-col>
+                    <el-col :span="2" :offset="1">
+                      <el-button @click="queding()" @click.native.prevent="$refs.page.click()" type="success"
+                                 icon="el-icon-check" round size="mini">发布
+                      </el-button>
+                    </el-col>
+                  </el-row>
+                </div>
+              </el-popover>
+            </el-row>
+          </el-col>
+        </el-row>
+      </el-col>
+    </el-row>
 
   </div>
 </template>
@@ -75,6 +205,8 @@
 
 <script>
   import axios from 'axios'
+  import _ from 'lodash'
+  // import VueMarkdown from 'vue-markdown'
   // axios.defaults.withCredentials=true;
   // axios.defaults.xsrfCookieName = 'csrftoken';
   // axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -82,31 +214,24 @@
 
   export default {
     name: 'detail',
-    // components: {
-    //   VueMarkdown
-    // },
     data() {
       return {
         article: {},
         detail_url: '',
         aid: this.$route.path.substr(1),
-        tags: [],
-        classification: '',
-        title: '',
-        click_nums: 0,
-        create_time: '',
-        content: '',
-        comments: [],
-        textarea3: '',
-        textarea4: '',
+        textarea_comment_1: '',
+        textarea_comment_2: '',
+        textarea_reply_1: '',
+        textarea_reply_2: '',
         guest: {
-          avatar: "",
+          avatar: "https://avatars1.githubusercontent.com/u/26531508?v=4",
           nick: "",
           token: "token",
           uid: 1
         },
         cid: 0,
         tid: 0,
+        tonick: '',
         reply: -1,
         isShow: false,
         tempcommentreplys: {},
@@ -127,26 +252,52 @@
         client_id: '7e8988aa177550563f2e',
         login_url: '',
         code: '',
+        fullWidthImage: this.avatar,
+        reply_visible: true,
+        comments_num: 0,
+        comment_guests: new Set(),
+        comment_guest_num: 0,
+        comment_order: true,
       }
     },
+
     methods: {
-      showToggle: function (cid, tid, reply, commentreplys) {
-        this.isShow = true;
-        this.dialogFormVisible = true;
+      update_textarea: _.debounce(function () {
+          this.textarea_comment_2 = this.textarea_comment_1;
+          this.textarea_reply_2 = this.textarea_reply_1;
+
+        }, 300
+      ),
+      display_comment_block: function () {
+        document.getElementById("comment_block").style.display = "";
+      },
+      cancle_comment: function () {
+        document.getElementById("comment_block").style.display = "none";
+        this.textarea_comment_1 = '';
+        this.textarea_comment_2 = '';
+      },
+
+      update_reply_data: function (cid, tid, tonick, reply, commentreplys) {
+        // this.isShow = true;
+        // this.dialogFormVisible = true;
         this.cid = cid;
         this.tid = tid;
         this.reply = reply;
         this.tempcommentreplys = commentreplys;
+        this.tonick = tonick;
       },
       quxiao: function () {
         this.dialogFormVisible = false;
         this.isShow = !this.isShow;
-        this.textarea4 = '';
+        this.textarea_reply_1 = '';
+        this.textarea_reply_2 = '';
+        this.reply_visible = false;
+        $refs.page.click();
       },
       queding: function () {
         this.dialogFormVisible = false;
         this.comment_reply_data = {
-          "content": this.textarea4,
+          "content": this.textarea_reply_1,
           "cid": this.cid,
           "aid": this.aid,
           "tid": this.tid,
@@ -158,9 +309,23 @@
           }
         )
           .then((response) => {
-            // this.tempcomment = response.data;
+            this.guest = response.data.user;
+            this.tempcommentreplys.push({
+              "content": this.textarea_reply_1,
+              "create_time": "刚刚",
+              "to": {
+                "nick": this.tonick,
+              },
+              "author": {
+                "uid": this.guest.uid,
+                "nick": this.guest.nick,
+                "avatar": this.guest.avatar,
+              }
+            });
             this.isShow = !this.isShow;
-            this.textarea4 = '';
+            this.textarea_reply_1 = '';
+            this.textarea_reply_2 = '';
+            this.reply_visible = false;
           })
           .catch(error => {
             console.log(error);
@@ -169,7 +334,7 @@
       },
       add_a_comment() {
         this.comment_data = {
-          "content": this.textarea3,
+          "content": this.textarea_comment_1,
           "cid": -1,
           "aid": this.aid,
           "tid": -1,
@@ -185,16 +350,53 @@
             }
             else if (response.data.hasOwnProperty("user")) {
               this.guest = response.data.user;
-              this.textarea3 = '';
+              var comment = {
+                "id": 1,
+                "comment_reply": [],
+                "author": {
+                  "uid": this.guest.uid,
+                  "nick": this.guest.nick,
+                  "avatar": this.guest.avatar
+                },
+                "create_time": "刚刚",
+                "content": this.textarea_comment_1
+              };
+              if (this.comment_order === true) {
+                this.article.comments.push(comment);
+              }
+              else {
+                this.article.comments.unshift(comment);
+              }
+              this.textarea_comment_1 = '';
+              this.textarea_comment_2 = '';
+              document.getElementById("comment_block").style.display = "none";
             }
           })
           .catch(error => {
             console.log(error);
-            alert('网络错误，不能访问');
+            alert('评论出错');
           });
         // console.log(this.comment_data);
-
       },
+
+      get_guests: function () {
+        for (var comment in this.article.comments) {
+          this.comment_guests.add(comment.author);
+          for (let reply in comment.comment_reply) {
+            this.comment_guests.add(reply.author);
+          }
+        }
+        ;
+        this.comment_guest_num = this.comment_guests.size;
+      },
+
+      comment_reverse: function (reverse) {
+        if (reverse !== this.comment_order) {
+          this.comment_order = !this.comment_order;
+          this.article.comments.reverse();
+        }
+      }
+
 
       // login: function(){
       //   // this.get_login_url();
@@ -219,25 +421,21 @@
       //     });
       // },
     },
+
     created() {
       // axios.defaults.withCredentials=true;
       // axios.defaults.xsrfCookieName = 'csrftoken';
       // axios.defaults.xsrfHeaderName = 'X-CSRFToken';
-
       this.$cookie.set('token', 'c0c7342ed246893749f4549371ec727bdea6da9e');
-      axios.get('http://localhost:8000/blog/articles/' + this.$route.path.substr(1))
+      axios.get('http://localhost:8000/blog/articles/' + this.$route.path.substring(1))
         .then(response => {
-          console.log(response);
-          this.article = response.data;
-          this.tags = this.article.tags;
-          this.title = this.article.title;
-          this.click_nums = this.article.click_nums;
-          this.create_time = this.article.create_time;
-          this.comments = this.article.comments;
-          this.content = this.article.content;
+
+          this.article = (response.data);
+          this.article.create_time = this.article.create_time.replace(/T/, ' ').replace(/-/g, '.').substr(0, 10);
+          this.comments_num = this.article.comments.length;
+          this.get_guests();
         })
         .catch(error => {
-          console.log(error);
           alert('初始化错误');
         });
     },
@@ -284,19 +482,27 @@
     background-color: #f9fafc;
   }
 
-  .full {
-    width: 100%;
-    height: auto;
-  }
-
-  img {
-    width: 50px;
-    border-radius: 2px;
-    box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.5);
-    transition: width 1s;
-  }
+  /*img {*/
+  /*width: 100%;*/
+  /*border-radius: 2px;*/
+  /*box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.5);*/
+  /*transition: width 1s;*/
+  /*}*/
 
   img:hover {
     cursor: pointer;
   }
+
+  .button{
+    color:  #969696;
+  }
+
+  .button:hover{
+    color: #2f2f2f;
+  }
+
+  .button:focus{
+    color: #2f2f2f;
+  }
+
 </style>

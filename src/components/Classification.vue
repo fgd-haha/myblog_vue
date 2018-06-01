@@ -1,33 +1,38 @@
+
 <template>
-  <div class="articles" style="margin-top: 100px;">
-    <el-row v-for="{ id, title, create_time, click_nums, tags } in this.articles" style="margin-top: 100px">
-      <el-col :span="21" :offset="1">
-        <div>
-          <!--<div @click="jump(id)" style="font-size:18px">{{title}}</div>-->
-          <router-link  :to="{path: '/' + id}" style="font-size:18px; color: #333; text-decoration: none;">{{title}}</router-link>
-          <span v-for="tag in tags">
+  <div class="articles">
+    <div v-for="{ id, title, create_time, click_nums, tags, classification} in this.articles">
+        <el-row style="margin-top: 100px" v-if="classification.id == classification_id">
+          <el-col :span="21" :offset="1">
+            <div>
+              <router-link  :to="{path: '/' + id}" style="font-size:18px; color: #333; text-decoration: none;">{{title}}</router-link>
+              <span v-for="tag in tags">
             <el-tag size="mini" type="info">{{tag.title}}</el-tag>
-          </span>
-        </div>
-      </el-col>
-      <el-col :span="2">
-        <div><span style="font-size:15px">{{create_time}}</span></div>
-      </el-col>
-    </el-row>
+            </span>
+            </div>
+          </el-col>
+          <el-col :span="2">
+            <div><span style="font-size:15px">{{create_time}}</span></div>
+          </el-col>
+        </el-row>
+      </div>
   </div>
 
 </template>
 
 <script>
   import axios from 'axios'
+  // const Tag_router = new Router({});
 
   export default {
+
     name: 'articles',
     data() {
       return {
         articles: [],
         tags: [],
-        classification: '',
+        classification_id: this.$route.path.substr(16,1),
+        tagid: 0,
       }
     },
     methods: {
@@ -46,12 +51,12 @@
     },
 
     created() {
+
       axios.get('http://localhost:8000/blog/articles/')
         .then(response => {
           console.log(response);
           if (this.articles = response.data)
             this.get_time();
-            this.articles.reverse();
         })
         .catch(error => {
           console.log(error);
