@@ -1,7 +1,7 @@
 <template>
   <!--<div class="Me" style="position: relative;">-->
   <div class="Me" style="position: fixed; left: 8%; ">
-    <div style="margin-top: 180px">
+    <div style="margin-top: 150px">
       <h3>{{name}}</h3>
       <span>{{email}}</span>
     </div>

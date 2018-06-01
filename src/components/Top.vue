@@ -1,7 +1,7 @@
 <template>
-  <div style="position: fixed; width: 58%">
+  <div style="position: fixed; left: 23%; width: 54%;">
     <el-menu :default-active="activeIndex" router="false" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-      <el-submenu index="3" style="float: right;">
+      <el-submenu index="3" style="float: right; z-index: auto">
         <template slot="title">标签</template>
         <div v-for="tag in this.tags">
           <el-menu-item :index="'3-' + tag.id" :route='"/tag/"+tag.id' @click="reload">{{tag.title}}</el-menu-item>

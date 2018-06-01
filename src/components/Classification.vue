@@ -1,32 +1,42 @@
 
 <template>
-  <div class="articles">
-    <div v-for="{ id, title, create_time, click_nums, tags, classification} in this.articles">
-        <el-row style="margin-top: 100px" v-if="classification.id == classification_id">
-          <el-col :span="21" :offset="1">
-            <div>
-              <router-link  :to="{path: '/' + id}" style="font-size:18px; color: #333; text-decoration: none;">{{title}}</router-link>
-              <span v-for="tag in tags">
+
+  <el-container>
+    <el-aside width="20%" style="background-color: #fff">
+     <Me></Me>
+    </el-aside>
+    <el-main>
+      <div class="articles">
+        <div v-for="{ id, title, create_time, click_nums, tags, classification} in this.articles">
+          <el-row style="margin-top: 100px" v-if="classification.id == classification_id">
+            <el-col :span="21" :offset="1">
+              <div>
+                <router-link  :to="{path: '/' + id}" style="font-size:18px; color: #333; text-decoration: none;">{{title}}</router-link>
+                <span v-for="tag in tags">
             <el-tag size="mini" type="info">{{tag.title}}</el-tag>
             </span>
-            </div>
-          </el-col>
-          <el-col :span="2">
-            <div><span style="font-size:15px">{{create_time}}</span></div>
-          </el-col>
-        </el-row>
+              </div>
+            </el-col>
+            <el-col :span="2">
+              <div><span style="font-size:15px">{{create_time}}</span></div>
+            </el-col>
+          </el-row>
+        </div>
       </div>
-  </div>
-
+    </el-main>
+    <el-aside width="20%" style="background-color: #fff"></el-aside>
+  </el-container>
 </template>
 
 <script>
   import axios from 'axios'
+  import Me from "./Me";
   // const Tag_router = new Router({});
 
   export default {
 
     name: 'articles',
+    components: {Me},
     data() {
       return {
         articles: [],

@@ -1,169 +1,106 @@
 <template>
-  <div ref="page" class="detail" style="width: 80%; margin-left:auto; margin-right: auto;">
-    <!--博客时间，阅读，评论数-->
-    <el-row type="flex" justify="end" style="margin-bottom: 50px; margin-top: 50px">
-      <i class="el-icon-date" style="margin-top: 2px"></i>&nbsp{{this.article.create_time}}&nbsp&nbsp
-      <i class="el-icon-view" style="margin-top: 2px"></i>&nbsp{{this.article.click_nums}}&nbsp&nbsp
-      <icon name="comments2" :scale="1.5" style="margin-top: 3px"></icon>
-      &nbsp{{this.comments_num}}
-    </el-row>
+  <el-container>
+    <el-aside width="20%" style="background-color: #f8f9fa"></el-aside>
+    <el-main>
+      <div ref="page" class="detail" style="padding-left: 10%; padding-right: 10%">
+        <!--博客时间，阅读，评论数-->
+        <el-row type="flex" justify="end" style="margin-bottom: 50px; margin-top: 50px">
+          <i class="el-icon-date" style="margin-top: 2px"></i>&nbsp{{this.article.create_time}}&nbsp&nbsp
+          <i class="el-icon-view" style="margin-top: 2px"></i>&nbsp{{this.article.click_nums}}&nbsp&nbsp
+          <icon name="comments2" :scale="1.5" style="margin-top: 3px"></icon>
+          &nbsp{{this.comments_num}}
+        </el-row>
 
-    <!--博客主体-->
-    <!--<vue-markdown :source="article.content" style="font-size: small;" v-highlight></vue-markdown>-->
+        <!--博客主体-->
+        <vue-markdown :source="article.content" style="font-size: small;" v-highlight></vue-markdown>
 
-    <!--评论框-->
-    <div style="margin-top: 20%; margin-bottom: 10%;">
-      <!--评论框-->
-      <el-row>
-        <el-col :span="12">
-          <el-input id="comment_textarea"
-                    class="textarea"
-                    type="textarea"
-                    :autosize="{ minRows: 5, maxRows: 40}"
-                    placeholder="写下你的评论。。。
+        <!--评论框-->
+        <div style="margin-top: 20%; margin-bottom: 10%;">
+          <!--评论框-->
+          <el-row>
+            <el-col :span="12">
+              <el-input id="comment_textarea"
+                        class="textarea"
+                        type="textarea"
+                        :autosize="{ minRows: 5, maxRows: 40}"
+                        placeholder="写下你的评论。。。
 新手上路，多多指教（支持markdown哦）"
-                    v-model.lazy="textarea_comment_1" @input="update_textarea()"
-                    auto-complete="true"
-                    @focus="display_comment_block()"
-          >
-          </el-input>
-        </el-col>
-        <el-col :span="11" offset="1">
-          <vue-markdown v-highlight :source="textarea_comment_2"></vue-markdown>
-        </el-col>
-      </el-row>
+                        v-model.lazy="textarea_comment_1" @input="update_textarea()"
+                        auto-complete="true"
+                        @focus="display_comment_block()"
+              >
+              </el-input>
+            </el-col>
+            <el-col :span="11" offset="1">
+              <vue-markdown v-highlight :source="textarea_comment_2"></vue-markdown>
+            </el-col>
+          </el-row>
 
 
-      <!--评论按钮-->
-      <div id="comment_block" style="display:none;">
-        <el-row>
-          <el-col :span="2" :offset="18">
-            <el-button @click="cancle_comment()" type="text" icon="el-icon-close" round size="mini">取消</el-button>
+          <!--评论按钮-->
+          <div id="comment_block" style="display:none;">
+            <el-row>
+              <el-col :span="2" :offset="18">
+                <el-button @click="cancle_comment()" type="text" icon="el-icon-close" round size="mini">取消</el-button>
+              </el-col>
+              <el-col :span="2" :offset="1">
+                <el-button @click="add_a_comment()" type="success" icon="el-icon-check" round size="mini">发布</el-button>
+              </el-col>
+            </el-row>
+          </div>
+        </div>
+
+        <!--登录按钮-->
+        <!--<el-row>-->
+        <!--&lt;!&ndash;<el-button @click="get_login_url()" type="primary" icon="el-icon-edit" circle></el-button>&ndash;&gt;-->
+        <!--<el-button @click="login()" type="primary" icon="el-icon-edit" circle>登录</el-button>-->
+        <!--&lt;!&ndash;guest:{{guest.nick}}&#45;&#45;{{guest.token}}&ndash;&gt;-->
+        <!--&lt;!&ndash;code:{{this.code}}&ndash;&gt;-->
+        <!--&lt;!&ndash;url:{{this.login_url}}&ndash;&gt;-->
+        <!--&lt;!&ndash;textarea: {{textarea_comment_1}}&ndash;&gt;-->
+        <!--</el-row>-->
+
+        <!--评论列表-->
+        <el-row type="flex" justify="space-between">
+          <el-col style="font-size: medium; font-weight: 600">
+            {{this.comments_num}}条评论/{{this.comment_guest_num}}人参与评论
           </el-col>
-          <el-col :span="2" :offset="1">
-            <el-button @click="add_a_comment()" type="success" icon="el-icon-check" round size="mini">发布</el-button>
+          <el-col :span="8">
+            <el-button class="button" type="text" @click="comment_reverse(true)">按时间正序</el-button>
+            <el-button class="button" type="text" @click="comment_reverse(false)">按时间倒序</el-button>
           </el-col>
         </el-row>
-      </div>
-    </div>
-
-    <!--登录按钮-->
-    <!--<el-row>-->
-    <!--&lt;!&ndash;<el-button @click="get_login_url()" type="primary" icon="el-icon-edit" circle></el-button>&ndash;&gt;-->
-    <!--<el-button @click="login()" type="primary" icon="el-icon-edit" circle>登录</el-button>-->
-    <!--&lt;!&ndash;guest:{{guest.nick}}&#45;&#45;{{guest.token}}&ndash;&gt;-->
-    <!--&lt;!&ndash;code:{{this.code}}&ndash;&gt;-->
-    <!--&lt;!&ndash;url:{{this.login_url}}&ndash;&gt;-->
-    <!--&lt;!&ndash;textarea: {{textarea_comment_1}}&ndash;&gt;-->
-    <!--</el-row>-->
-
-    <!--评论列表-->
-    <el-row type="flex" justify="space-between">
-      <el-col style="font-size: medium; font-weight: 600">
-        {{this.comments_num}}条评论/{{this.comment_guest_num}}人参与评论
-      </el-col>
-      <el-col :span="8">
-        <el-button class="button" type="text" @click="comment_reverse(true)">按时间正序</el-button>
-        <el-button class="button" type="text" @click="comment_reverse(false)">按时间倒序</el-button>
-      </el-col>
-    </el-row>
-    <el-row v-for="comment in this.article.comments" style="margin-bottom: 0">
-      <div style="margin: 0 6px 10px 6px;border-top:1px dotted #C0C0C0;"></div>
-      <!--图片-->
-      <el-col :span="2" :offset="1">
-        <el-popover
-          placement="right"
-          trigger="click">
-          <img :src=comment.author.avatar>
-          <img :src=comment.author.avatar width="50px" slot="reference">
-        </el-popover>
-      </el-col>
-      <!--评论-->
-      <el-col :span="21">
-        <!--昵称-->
-        <el-row style="color:#909399;">{{comment.author.nick}}</el-row>
-        <!--评论内容-->
-        <el-row style="font-size: small; margin: 0;">
-          <vue-markdown v-highlight :source="comment.content"></vue-markdown>
-        </el-row>
-        <!--评论时间，回复按钮-->
-        <el-row style="margin-bottom: 0; color: #909399">
-          {{comment.create_time.replace(/T/, ' ').replace(/-/g, '.').substr(0, 19)}} ·
-          <el-popover placement="right" trigger="click" width="1000">
-            <el-button type="text" icon="el-icon-edit"
-                       @click="update_reply_data(comment.id, comment.author.uid, comment.author.nick, 1, comment.comment_reply)"
-                       style="color:#909399"
-                       slot="reference">回复
-            </el-button>
-
-            <div id="reply_block">
-              <el-row style="margin-bottom: 0">
-                <el-col :span="12">
-                  <el-input type="textarea"
-                            :autosize="{ minRows: 5, maxRows: 40}"
-                            placeholder="写下你的评论。。。
-新手上路，多多指教（支持markdown哦）"
-                            v-model.lazy="textarea_reply_1" @input="update_textarea()"
-                            auto-complete="true"
-                            autofocus="true"
-                            style="background-color: #f7f7f7"
-                  >
-                  </el-input>
-                </el-col>
-                <el-col :span="11" offset="1">
-                  <vue-markdown v-highlight :source="textarea_reply_2"></vue-markdown>
-                </el-col>
-              </el-row>
-              <el-row style="margin-bottom: 0; margin-top: 0">
-                <el-col :span="2" :offset="18">
-                  <el-button @click="quxiao()" @click.native.prevent="$refs.page.click()" type="text"
-                             icon="el-icon-close" round size="mini">取消
-                  </el-button>
-                </el-col>
-                <el-col :span="2" :offset="1">
-                  <el-button @click="queding()" @click.native.prevent="$refs.page.click()" type="success"
-                             icon="el-icon-check" round size="mini">发布
-                  </el-button>
-                </el-col>
-              </el-row>
-            </div>
-          </el-popover>
-        </el-row>
-        <!--回复-->
-        <el-row v-for="reply in comment.comment_reply" style="margin-bottom: 0">
-          <!--线-->
+        <el-row v-for="comment in this.article.comments" style="margin-bottom: 0">
           <div style="margin: 0 6px 10px 6px;border-top:1px dotted #C0C0C0;"></div>
-          <!--头像-->
-          <el-col :span="2">
+          <!--图片-->
+          <el-col :span="2" :offset="1">
             <el-popover
               placement="right"
               trigger="click">
-              <img :src=reply.author.avatar>
-              <img :src=reply.author.avatar width="50px" slot="reference">
+              <img :src=comment.author.avatar>
+              <img :src=comment.author.avatar width="50px" slot="reference">
             </el-popover>
           </el-col>
-
-          <el-col :span="22">
+          <!--评论-->
+          <el-col :span="21">
             <!--昵称-->
-            <el-row>
-              <span style="color: #909399">{{reply.author.nick}}</span>
-              <icon name="review" :scale="2"></icon>
-              <span style="color: #909399">{{reply.to.nick}}</span>
+            <el-row style="color:#909399;">{{comment.author.nick}}</el-row>
+            <!--评论内容-->
+            <el-row style="font-size: small; margin: 0;">
+              <vue-markdown v-highlight :source="comment.content"></vue-markdown>
             </el-row>
-            <!--回复内容-->
-            <el-row style="font-size: small; margin: 0">{{reply.content}}</el-row>
-            <!--回复时间,按钮-->
-            <el-row style="margin-bottom: 0; color: #909399;">
-              {{reply.create_time.replace('T', ' ').replace(/-/g, '.').substr(0, 19)}} ·
+            <!--评论时间，回复按钮-->
+            <el-row style="margin-bottom: 0; color: #909399">
+              {{comment.create_time.replace(/T/, ' ').replace(/-/g, '.').substr(0, 19)}} ·
               <el-popover placement="right" trigger="click" width="1000">
                 <el-button type="text" icon="el-icon-edit"
-                           @click="update_reply_data(comment.id, reply.to.uid, reply.to.nick, 1, comment.comment_reply)"
+                           @click="update_reply_data(comment.id, comment.author.uid, comment.author.nick, 1, comment.comment_reply)"
                            style="color:#909399"
                            slot="reference">回复
                 </el-button>
 
-                <div>
-                  <el-row>
+                <div id="reply_block">
+                  <el-row style="margin-bottom: 0">
                     <el-col :span="12">
                       <el-input type="textarea"
                                 :autosize="{ minRows: 5, maxRows: 40}"
@@ -172,6 +109,7 @@
                                 v-model.lazy="textarea_reply_1" @input="update_textarea()"
                                 auto-complete="true"
                                 autofocus="true"
+                                style="background-color: #f7f7f7"
                       >
                       </el-input>
                     </el-col>
@@ -179,9 +117,9 @@
                       <vue-markdown v-highlight :source="textarea_reply_2"></vue-markdown>
                     </el-col>
                   </el-row>
-                  <el-row>
+                  <el-row style="margin-bottom: 0; margin-top: 0">
                     <el-col :span="2" :offset="18">
-                      <el-button @click.native.prevent="$refs.page.click()" @click="quxiao()" type="text"
+                      <el-button @click="quxiao()" @click.native.prevent="$refs.page.click()" type="text"
                                  icon="el-icon-close" round size="mini">取消
                       </el-button>
                     </el-col>
@@ -194,12 +132,80 @@
                 </div>
               </el-popover>
             </el-row>
+            <!--回复-->
+            <el-row v-for="reply in comment.comment_reply" style="margin-bottom: 0">
+              <!--线-->
+              <div style="margin: 0 6px 10px 6px;border-top:1px dotted #C0C0C0;"></div>
+              <!--头像-->
+              <el-col :span="2">
+                <el-popover
+                  placement="right"
+                  trigger="click">
+                  <img :src=reply.author.avatar>
+                  <img :src=reply.author.avatar width="50px" slot="reference">
+                </el-popover>
+              </el-col>
+
+              <el-col :span="22">
+                <!--昵称-->
+                <el-row>
+                  <span style="color: #909399">{{reply.author.nick}}</span>
+                  <icon name="review" :scale="2"></icon>
+                  <span style="color: #909399">{{reply.to.nick}}</span>
+                </el-row>
+                <!--回复内容-->
+                <el-row style="font-size: small; margin: 0">{{reply.content}}</el-row>
+                <!--回复时间,按钮-->
+                <el-row style="margin-bottom: 0; color: #909399;">
+                  {{reply.create_time.replace('T', ' ').replace(/-/g, '.').substr(0, 19)}} ·
+                  <el-popover placement="right" trigger="click" width="1000">
+                    <el-button type="text" icon="el-icon-edit"
+                               @click="update_reply_data(comment.id, reply.to.uid, reply.to.nick, 1, comment.comment_reply)"
+                               style="color:#909399"
+                               slot="reference">回复
+                    </el-button>
+
+                    <div>
+                      <el-row>
+                        <el-col :span="12">
+                          <el-input type="textarea"
+                                    :autosize="{ minRows: 5, maxRows: 40}"
+                                    placeholder="写下你的评论。。。
+新手上路，多多指教（支持markdown哦）"
+                                    v-model.lazy="textarea_reply_1" @input="update_textarea()"
+                                    auto-complete="true"
+                                    autofocus="true"
+                          >
+                          </el-input>
+                        </el-col>
+                        <el-col :span="11" offset="1">
+                          <vue-markdown v-highlight :source="textarea_reply_2"></vue-markdown>
+                        </el-col>
+                      </el-row>
+                      <el-row>
+                        <el-col :span="2" :offset="18">
+                          <el-button @click.native.prevent="$refs.page.click()" @click="quxiao()" type="text"
+                                     icon="el-icon-close" round size="mini">取消
+                          </el-button>
+                        </el-col>
+                        <el-col :span="2" :offset="1">
+                          <el-button @click="queding()" @click.native.prevent="$refs.page.click()" type="success"
+                                     icon="el-icon-check" round size="mini">发布
+                          </el-button>
+                        </el-col>
+                      </el-row>
+                    </div>
+                  </el-popover>
+                </el-row>
+              </el-col>
+            </el-row>
           </el-col>
         </el-row>
-      </el-col>
-    </el-row>
 
-  </div>
+      </div>
+    </el-main>
+    <el-aside width="20%" style="background-color: #f8f9fa"></el-aside>
+  </el-container>
 </template>
 
 
@@ -493,16 +499,15 @@
     cursor: pointer;
   }
 
-  .button{
-    color:  #969696;
+  .button {
+    color: #969696;
   }
 
-  .button:hover{
+  .button:hover {
     color: #2f2f2f;
   }
 
-  .button:focus{
+  .button:focus {
     color: #2f2f2f;
   }
-
 </style>

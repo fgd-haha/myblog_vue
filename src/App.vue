@@ -1,17 +1,8 @@
 <template>
   <div id="app">
     <el-container>
-      <el-aside width="20%">
-        <Me></Me>
-      </el-aside>
-      <el-container>
-        <el-header>
-          <Top></Top>
-        </el-header>
-        <el-main style="width: 75%">
-          <router-view></router-view>
-        </el-main>
-      </el-container>
+      <el-header><top></top></el-header>
+      <el-main><router-view></router-view></el-main>
     </el-container>
   </div>
 </template>
@@ -58,6 +49,7 @@
     background-color: #fff;;
     color: #333;
     text-align: left;
+    padding: 0
     /*line-height: 50px;*/
   }
 
