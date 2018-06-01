@@ -6,22 +6,33 @@
      <Me></Me>
     </el-aside>
     <el-main>
-      <div class="articles">
-        <div v-for="{ id, title, create_time, click_nums, tags, classification} in this.articles">
-          <el-row style="margin-top: 100px" v-if="classification.id == classification_id">
-            <el-col :span="21" :offset="1">
-              <div>
-                <router-link  :to="{path: '/' + id}" style="font-size:18px; color: #333; text-decoration: none;">{{title}}</router-link>
-                <span v-for="tag in tags">
+      <div class="articles" style="padding-left: 10%; padding-right: 10%; margin-top: 10%;">
+        <div v-for="{ id, title, abstract, create_time, click_nums, tags, comments, classification } in this.articles"
+             style="margin-top: 8%;"
+             v-if="classification.id == classification_id">
+
+          <el-row style="margin-bottom: 1%;">
+            <router-link :to="{path: '/' + id}"
+                         style="font-size:18px; font-weight: bold; color: #333; text-decoration: none;">
+              {{title}}
+            </router-link>
+            <span v-for="tag in tags">
             <el-tag size="mini" type="info">{{tag.title}}</el-tag>
-            </span>
-              </div>
-            </el-col>
-            <el-col :span="2">
-              <div><span style="font-size:15px">{{create_time}}</span></div>
-            </el-col>
+              </span>
           </el-row>
-        </div>
+
+          <el-row style="margin: 0; font-size: 15px">
+            {{abstract}}
+          </el-row>
+
+          <el-row type="flex" style="margin-top: 1%">
+            <i class="el-icon-date" style="margin-top: 2px"></i>&nbsp{{create_time}}&nbsp&nbsp
+            <i class="el-icon-view" style="margin-top: 2px"></i>&nbsp{{click_nums}}&nbsp&nbsp
+            <icon name="comments2" :scale="1.7" style="margin-top: 2px"></icon>
+            &nbsp{{comments.length}}
+          </el-row>
+
+        </div>>
       </div>
     </el-main>
     <el-aside width="20%" style="background-color: #fff"></el-aside>

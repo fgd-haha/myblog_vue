@@ -2,7 +2,7 @@
   <el-container>
     <el-aside width="20%" style="background-color: #f8f9fa"></el-aside>
     <el-main>
-      <div ref="page" class="detail" style="padding-left: 10%; padding-right: 10%">
+      <div ref="page" class="detail" style="padding-left: 10%; padding-right: 10%; margin-bottom: 20%">
         <!--博客时间，阅读，评论数-->
         <el-row type="flex" justify="end" style="margin-bottom: 50px; margin-top: 50px">
           <i class="el-icon-date" style="margin-top: 2px"></i>&nbsp{{this.article.create_time}}&nbsp&nbsp

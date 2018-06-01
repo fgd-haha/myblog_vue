@@ -1,27 +1,34 @@
-
 <template>
   <el-container>
     <el-aside width="20%" style="background-color: #fff">
       <Me></Me>
     </el-aside>
     <el-main>
-      <div class="articles" style="margin-top: 100px">
-        <div v-for="{ id, title, create_time, click_nums, tags } in this.articles">
-          <div v-for="tag in tags">
-            <el-row style="margin-top: 100px" v-if="tag.id == tagid">
-              <el-col :span="21" :offset="1">
-                <div>
-                  <!--<div @click="jump(id)" style="font-size:18px">{{title}}</div>-->
-                  <router-link  :to="{path: '/' + id}" style="font-size:18px; color: #333; text-decoration: none;">{{title}}</router-link>
-                  <span v-for="tag in tags">
+      <div class="articles" style="padding-left: 10%; padding-right: 10%; margin-top: 10%;">
+        <div v-for="{ id, title, abstract, create_time, click_nums, tags, comments } in this.articles"
+             style="margin-top: 8%;">
+          <div v-for="tag in tags" v-if="tag.id == tagid">
+            <el-row style="margin-bottom: 1%;">
+              <router-link :to="{path: '/' + id}"
+                           style="font-size:18px; font-weight: bold; color: #333; text-decoration: none;">
+                {{title}}
+              </router-link>
+              <span v-for="tag in tags">
             <el-tag size="mini" type="info">{{tag.title}}</el-tag>
-            </span>
-                </div>
-              </el-col>
-              <el-col :span="2">
-                <div><span style="font-size:15px">{{create_time}}</span></div>
-              </el-col>
+              </span>
             </el-row>
+
+            <el-row style="margin: 0; font-size: 15px">
+              {{abstract}}
+            </el-row>
+
+            <el-row type="flex" style="margin-top: 1%">
+              <i class="el-icon-date" style="margin-top: 2px"></i>&nbsp{{create_time}}&nbsp&nbsp
+              <i class="el-icon-view" style="margin-top: 2px"></i>&nbsp{{click_nums}}&nbsp&nbsp
+              <icon name="comments2" :scale="1.7" style="margin-top: 2px"></icon>
+              &nbsp{{comments.length}}
+            </el-row>
+
           </div>
         </div>
       </div>
@@ -63,7 +70,7 @@
     },
 
     created() {
-      this.tagid = this.$route.path.substr(5,1);
+      this.tagid = this.$route.path.substr(5, 1);
       axios.get('http://localhost:8000/blog/articles/')
         .then(response => {
           console.log(response);
