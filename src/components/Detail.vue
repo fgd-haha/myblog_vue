@@ -8,14 +8,37 @@
           <i class="el-icon-date" style="margin-top: 2px"></i>&nbsp{{this.article.create_time}}&nbsp&nbsp
           <i class="el-icon-view" style="margin-top: 2px"></i>&nbsp{{this.article.click_nums}}&nbsp&nbsp
           <icon name="comments2" :scale="1.5" style="margin-top: 3px"></icon>
-          &nbsp{{this.comments_num}}
+          &nbsp{{this.article.comments.length}}
         </el-row>
 
         <!--博客主体-->
-        <vue-markdown :source="article.content" style="font-size: small;" v-highlight></vue-markdown>
+        <!--<vue-markdown :source="article.content" style="font-size: small;" v-highlight></vue-markdown>-->
+
+        <!--登录按钮-->
+        <div style="margin-top: 20%;">
+          <el-row v-if=!logined>
+            <div @click="login()">
+              <img style="margin-bottom: 1%" src="./../assets/GitHub-Mark-32px.png"/>
+              <el-button type="text" style="font-size: large; color: black;">登录</el-button>
+            </div>
+          </el-row>
+          <el-row v-if=logined>
+            <el-col :span="2">
+              <el-popover
+                placement="right"
+                trigger="click">
+                <img :src=guest.avatar>
+                <img :src=guest.avatar width="50px" slot="reference">
+              </el-popover>
+            </el-col>
+            <el-col span="20" style="font-size: medium; margin-top: 1%">
+              {{guest.nick}}
+            </el-col>
+          </el-row>
+        </div>
 
         <!--评论框-->
-        <div style="margin-top: 20%; margin-bottom: 10%;">
+        <div style="margin-bottom: 10%;">
           <!--评论框-->
           <el-row>
             <el-col :span="12">
@@ -28,6 +51,7 @@
                         v-model.lazy="textarea_comment_1" @input="update_textarea()"
                         auto-complete="true"
                         @focus="display_comment_block()"
+                        :disabled="!logined"
               >
               </el-input>
             </el-col>
@@ -44,26 +68,18 @@
                 <el-button @click="cancle_comment()" type="text" icon="el-icon-close" round size="mini">取消</el-button>
               </el-col>
               <el-col :span="2" :offset="1">
-                <el-button @click="add_a_comment()" type="success" icon="el-icon-check" round size="mini">发布</el-button>
+                <el-button :disabled="!logined" @click="add_a_comment()" type="success" icon="el-icon-check" round
+                           size="mini">发布
+                </el-button>
               </el-col>
             </el-row>
           </div>
         </div>
 
-        <!--登录按钮-->
-        <!--<el-row>-->
-        <!--&lt;!&ndash;<el-button @click="get_login_url()" type="primary" icon="el-icon-edit" circle></el-button>&ndash;&gt;-->
-        <!--<el-button @click="login()" type="primary" icon="el-icon-edit" circle>登录</el-button>-->
-        <!--&lt;!&ndash;guest:{{guest.nick}}&#45;&#45;{{guest.token}}&ndash;&gt;-->
-        <!--&lt;!&ndash;code:{{this.code}}&ndash;&gt;-->
-        <!--&lt;!&ndash;url:{{this.login_url}}&ndash;&gt;-->
-        <!--&lt;!&ndash;textarea: {{textarea_comment_1}}&ndash;&gt;-->
-        <!--</el-row>-->
-
         <!--评论列表-->
         <el-row type="flex" justify="space-between">
           <el-col style="font-size: medium; font-weight: 600">
-            {{this.comments_num}}条评论/{{this.comment_guest_num}}人参与评论
+            {{this.article.comments.length}}条评论/{{this.comment_guest_num}}人参与评论
           </el-col>
           <el-col :span="8">
             <el-button class="button" type="text" @click="comment_reverse(true)">按时间正序</el-button>
@@ -96,7 +112,8 @@
                 <el-button type="text" icon="el-icon-edit"
                            @click="update_reply_data(comment.id, comment.author.uid, comment.author.nick, 1, comment.comment_reply)"
                            style="color:#909399"
-                           slot="reference">回复
+                           slot="reference"
+                           :disabled="!logined">回复
                 </el-button>
 
                 <div id="reply_block">
@@ -162,7 +179,8 @@
                     <el-button type="text" icon="el-icon-edit"
                                @click="update_reply_data(comment.id, reply.to.uid, reply.to.nick, 1, comment.comment_reply)"
                                style="color:#909399"
-                               slot="reference">回复
+                               slot="reference"
+                               :disabled="!logined">回复
                     </el-button>
 
                     <div>
@@ -232,7 +250,7 @@
         guest: {
           avatar: "https://avatars1.githubusercontent.com/u/26531508?v=4",
           nick: "",
-          token: "token",
+          token: "",
           uid: 1
         },
         cid: 0,
@@ -257,10 +275,10 @@
         state: '',
         client_id: '7e8988aa177550563f2e',
         login_url: '',
+        logined: false,
         code: '',
         fullWidthImage: this.avatar,
         reply_visible: true,
-        comments_num: 0,
         comment_guests: new Set(),
         comment_guest_num: 0,
         comment_order: true,
@@ -269,14 +287,15 @@
 
     methods: {
       update_textarea: _.debounce(function () {
-          this.textarea_comment_2 = this.textarea_comment_1;
-          this.textarea_reply_2 = this.textarea_reply_1;
+        this.textarea_comment_2 = this.textarea_comment_1;
+        this.textarea_reply_2 = this.textarea_reply_1;
 
-        }, 300
-      ),
+      }, 300),
+
       display_comment_block: function () {
         document.getElementById("comment_block").style.display = "";
       },
+
       cancle_comment: function () {
         document.getElementById("comment_block").style.display = "none";
         this.textarea_comment_1 = '';
@@ -292,6 +311,7 @@
         this.tempcommentreplys = commentreplys;
         this.tonick = tonick;
       },
+
       quxiao: function () {
         this.dialogFormVisible = false;
         this.isShow = !this.isShow;
@@ -300,6 +320,7 @@
         this.reply_visible = false;
         $refs.page.click();
       },
+
       queding: function () {
         this.dialogFormVisible = false;
         this.comment_reply_data = {
@@ -308,7 +329,8 @@
           "aid": this.aid,
           "tid": this.tid,
           "reply": this.reply,
-          "token": "c0c7342ed246893749f4549371ec727bdea6da9e",
+          "token": this.guest.token,
+          // "token": "c0c7342ed246893749f4549371ec727bdea6da9e",
         };
         axios.get('http://localhost:8000/blog/createreply', {
             params: this.comment_reply_data
@@ -332,12 +354,14 @@
             this.textarea_reply_1 = '';
             this.textarea_reply_2 = '';
             this.reply_visible = false;
+            this.get_guests();
           })
           .catch(error => {
             console.log(error);
             alert('出错啦，不能访问');
           });
       },
+
       add_a_comment() {
         this.comment_data = {
           "content": this.textarea_comment_1,
@@ -345,7 +369,7 @@
           "aid": this.aid,
           "tid": -1,
           "reply": -1,
-          "token": "c0c7342ed246893749f4549371ec727bdea6da9e",
+          "token": this.guest.token,
         };
         axios.get('http://localhost:8000/blog/createreply', {
           params: this.comment_data
@@ -376,6 +400,7 @@
               this.textarea_comment_1 = '';
               this.textarea_comment_2 = '';
               document.getElementById("comment_block").style.display = "none";
+              this.get_guests();
             }
           })
           .catch(error => {
@@ -386,13 +411,14 @@
       },
 
       get_guests: function () {
-        for (var comment in this.article.comments) {
-          this.comment_guests.add(comment.author);
-          for (let reply in comment.comment_reply) {
-            this.comment_guests.add(reply.author);
+        var comments = eval(this.article.comments);
+
+        for (var i = 0; i < comments.length; i++) {
+          this.comment_guests.add(comments[i].author.uid);
+          for (var j = 0; j < comments[i].comment_reply.length; j++) {
+            this.comment_guests.add(comments[i].comment_reply[j].author.uid);
           }
         }
-        ;
         this.comment_guest_num = this.comment_guests.size;
       },
 
@@ -401,21 +427,21 @@
           this.comment_order = !this.comment_order;
           this.article.comments.reverse();
         }
-      }
+      },
 
 
-      // login: function(){
-      //   // this.get_login_url();
-      //   axios.get('http://localhost:8000/blog/login?state=' + this.aid)
-      //     .then(response => {
-      //       console.log(response.data);
-      //       this.login_url = response.data.url;
-      //       window.location.href = this.login_url;
-      //     }).catch(error => {
-      //     console.log(error);
-      //     alert('获取login_url失败');
-      //   });
-      // },
+      login: function () {
+        // this.get_login_url();
+        axios.get('http://localhost:8000/blog/login?state=' + this.aid)
+          .then(response => {
+            console.log(response.data);
+            this.login_url = response.data.url;
+            window.location.href = this.login_url;
+          }).catch(error => {
+          console.log(error);
+          alert('获取login_url失败');
+        });
+      },
       // get_login_url: function () {
       //   axios.get('http://localhost:8000/blog/login/')
       //     .then(response => {
@@ -432,18 +458,26 @@
       // axios.defaults.withCredentials=true;
       // axios.defaults.xsrfCookieName = 'csrftoken';
       // axios.defaults.xsrfHeaderName = 'X-CSRFToken';
-      this.$cookie.set('token', 'c0c7342ed246893749f4549371ec727bdea6da9e');
+      this.guest.token = this.$cookie.get('token');
       axios.get('http://localhost:8000/blog/articles/' + this.$route.path.substring(1))
         .then(response => {
-
           this.article = (response.data);
           this.article.create_time = this.article.create_time.replace(/T/, ' ').replace(/-/g, '.').substr(0, 10);
-          this.comments_num = this.article.comments.length;
           this.get_guests();
         })
         .catch(error => {
-          alert('初始化错误');
+          alert('获取文章失败');
         });
+
+      axios.get('http://localhost:8000/blog/guest/?token=' + this.guest.token)
+        .then(response => {
+          if (response.status === 200) {
+            this.guest = response.data;
+            this.logined = true;
+          }
+        }).catch(error => {
+        console.log('未登录');
+      });
     },
 
 
