@@ -48,7 +48,7 @@
         articles: [],
         tags: [],
         classification: '',
-        baseurl: 'http://127.0.0.1:8000/',
+        baseurl: 'http://39.99.48.130/',
       }
     },
     methods: {

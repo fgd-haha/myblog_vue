@@ -50,7 +50,7 @@
     components: {Me},
     data() {
       return {
-        baseurl: 'http://127.0.0.1:8000/',
+        baseurl: 'http://39.99.48.130/',
         articles: [],
         tags: [],
         classification_id: this.$route.path.substr(16,1),
