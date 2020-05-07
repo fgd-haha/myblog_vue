@@ -1,11 +1,13 @@
 <template>
   <!--<div class="Me" style="position: relative;">-->
   <div class="Me" style="position: fixed; left: 8%; ">
-    <div style="margin-top: 150px">
-      <h3>{{name}}</h3>
+    <!--<img src="../assets/shuye.jpg" style="width: 100px; margin-top: 150px">-->
+    <img src="../assets/shuye2.jpg" style="width: 100px; margin-top: 150px">
+      <div>
+      <!--<h3>{{name}}</h3>-->
       <span>{{email}}</span>
     </div>
-    <router-link to="/"><img style="margin-top: 100px;" src="./../assets/GitHub-Mark-32px.png" @click="jump_github()"/></router-link>
+    <router-link :to="{name: articles}"><img style="margin-top: 100px;" @click="jump_github()" src="./../assets/GitHub-Mark-32px.png"/></router-link>
   </div>
 </template>
 
@@ -20,7 +22,7 @@
     },
     methods:{
       jump_github: function () {
-        window.location.href = 'https://github.com/fgd-haha/';
+        window.open('https://github.com/fgd-haha/');
       }
     }
   }

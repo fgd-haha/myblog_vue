@@ -14,27 +14,27 @@ export default new Router({
   mode: 'history',
   routes: [
     {
-      path: '/',
+      path: '/myblog/',
       name: 'articles',
       component: Articles
     },
     {
-      path: '/:articleid',
-      name: 'detail',
+      path: '/myblog/:articleid',
+      name: 'article_detail',
       component: Detail
     },
     {
-      path: '/classification/:classificationid',
-      name: 'classificationid',
+      path: '/myblog/classification/:classificationid',
+      name: 'classification',
       component: Classification
     },
     {
-      path: '/tag/:tagid',
-      name: 'tagid',
+      path: '/myblog/tag/:tagid',
+      name: 'tag',
       component: Tag
     },
     {
-      path: '*',
+      path: 'myblog/*',
       component: Page_404
     }
   ]

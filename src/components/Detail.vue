@@ -12,7 +12,7 @@
         </el-row>
 
         <!--博客主体-->
-        <!--<vue-markdown :source="article.content" style="font-size: small;" v-highlight></vue-markdown>-->
+        <vue-markdown :source="article.content" style="font-size: small;" v-highlight></vue-markdown>
 
         <!--登录按钮-->
         <div style="margin-top: 20%;">
@@ -31,7 +31,7 @@
                 <img :src=guest.avatar width="50px" slot="reference">
               </el-popover>
             </el-col>
-            <el-col span="20" style="font-size: medium; margin-top: 1%">
+            <el-col :span="20" style="font-size: medium; margin-top: 1%">
               {{guest.nick}}
             </el-col>
           </el-row>
@@ -46,8 +46,7 @@
                         class="textarea"
                         type="textarea"
                         :autosize="{ minRows: 5, maxRows: 40}"
-                        placeholder="写下你的评论。。。
-新手上路，多多指教（支持markdown哦）"
+                        placeholder="支持markdown"
                         v-model.lazy="textarea_comment_1" @input="update_textarea()"
                         auto-complete="true"
                         @focus="display_comment_block()"
@@ -55,7 +54,7 @@
               >
               </el-input>
             </el-col>
-            <el-col :span="11" offset="1">
+            <el-col :span="11" :offset="1">
               <vue-markdown v-highlight :source="textarea_comment_2"></vue-markdown>
             </el-col>
           </el-row>
@@ -93,14 +92,14 @@
             <el-popover
               placement="right"
               trigger="click">
-              <img :src=comment.author.avatar>
-              <img :src=comment.author.avatar width="50px" slot="reference">
+              <img :src=comment.guest.avatar>
+              <img :src=comment.guest.avatar width="50px" slot="reference">
             </el-popover>
           </el-col>
           <!--评论-->
           <el-col :span="21">
             <!--昵称-->
-            <el-row style="color:#909399;">{{comment.author.nick}}</el-row>
+            <el-row style="color:#909399;">{{comment.guest.nick}}</el-row>
             <!--评论内容-->
             <el-row style="font-size: small; margin: 0;">
               <vue-markdown v-highlight :source="comment.content"></vue-markdown>
@@ -110,7 +109,6 @@
               {{comment.create_time.replace(/T/, ' ').replace(/-/g, '.').substr(0, 19)}} ·
               <el-popover placement="right" trigger="click" width="1000">
                 <el-button type="text" icon="el-icon-edit"
-                           @click="update_reply_data(comment.id, comment.author.uid, comment.author.nick, 1, comment.comment_reply)"
                            style="color:#909399"
                            slot="reference"
                            :disabled="!logined">回复
@@ -121,8 +119,7 @@
                     <el-col :span="12">
                       <el-input type="textarea"
                                 :autosize="{ minRows: 5, maxRows: 40}"
-                                placeholder="写下你的评论。。。
-新手上路，多多指教（支持markdown哦）"
+                                placeholder="支持markdown"
                                 v-model.lazy="textarea_reply_1" @input="update_textarea()"
                                 auto-complete="true"
                                 autofocus="true"
@@ -130,7 +127,7 @@
                       >
                       </el-input>
                     </el-col>
-                    <el-col :span="11" offset="1">
+                    <el-col :span="11" :offset="1">
                       <vue-markdown v-highlight :source="textarea_reply_2"></vue-markdown>
                     </el-col>
                   </el-row>
@@ -141,7 +138,7 @@
                       </el-button>
                     </el-col>
                     <el-col :span="2" :offset="1">
-                      <el-button @click="queding()" @click.native.prevent="$refs.page.click()" type="success"
+                      <el-button @click="queding(aid=aid,cid=comment.id, tid=comment.guest.uid)" @click.native.prevent="$refs.page.click()" type="success"
                                  icon="el-icon-check" round size="mini">发布
                       </el-button>
                     </el-col>
@@ -158,56 +155,56 @@
                 <el-popover
                   placement="right"
                   trigger="click">
-                  <img :src=reply.author.avatar>
-                  <img :src=reply.author.avatar width="50px" slot="reference">
+                  <img :src=reply.guest.avatar>
+                  <img :src=reply.guest.avatar width="50px" slot="reference">
                 </el-popover>
               </el-col>
 
               <el-col :span="22">
                 <!--昵称-->
                 <el-row>
-                  <span style="color: #909399">{{reply.author.nick}}</span>
+                  <span style="color: #909399">{{reply.guest.nick}}</span>
                   <icon name="review" :scale="2"></icon>
                   <span style="color: #909399">{{reply.to.nick}}</span>
                 </el-row>
                 <!--回复内容-->
-                <el-row style="font-size: small; margin: 0">{{reply.content}}</el-row>
+                <el-row style="font-size: small; margin: 0">
+                  <vue-markdown v-highlight :source="reply.content"></vue-markdown>
+                </el-row>
                 <!--回复时间,按钮-->
                 <el-row style="margin-bottom: 0; color: #909399;">
                   {{reply.create_time.replace('T', ' ').replace(/-/g, '.').substr(0, 19)}} ·
                   <el-popover placement="right" trigger="click" width="1000">
                     <el-button type="text" icon="el-icon-edit"
-                               @click="update_reply_data(comment.id, reply.to.uid, reply.to.nick, 1, comment.comment_reply)"
                                style="color:#909399"
                                slot="reference"
                                :disabled="!logined">回复
                     </el-button>
 
                     <div>
-                      <el-row>
+                      <el-row style="margin-bottom: 0">
                         <el-col :span="12">
                           <el-input type="textarea"
                                     :autosize="{ minRows: 5, maxRows: 40}"
-                                    placeholder="写下你的评论。。。
-新手上路，多多指教（支持markdown哦）"
+                                    placeholder="支持markdown"
                                     v-model.lazy="textarea_reply_1" @input="update_textarea()"
                                     auto-complete="true"
                                     autofocus="true"
                           >
                           </el-input>
                         </el-col>
-                        <el-col :span="11" offset="1">
+                        <el-col :span="11" :offset="1">
                           <vue-markdown v-highlight :source="textarea_reply_2"></vue-markdown>
                         </el-col>
                       </el-row>
-                      <el-row>
+                      <el-row style="margin-top: 0; margin-bottom: 0">
                         <el-col :span="2" :offset="18">
                           <el-button @click.native.prevent="$refs.page.click()" @click="quxiao()" type="text"
                                      icon="el-icon-close" round size="mini">取消
                           </el-button>
                         </el-col>
                         <el-col :span="2" :offset="1">
-                          <el-button @click="queding()" @click.native.prevent="$refs.page.click()" type="success"
+                          <el-button @click="queding(aid=aid,cid=comment.id, tid=reply.to.uid)" @click.native.prevent="$refs.page.click()" type="success"
                                      icon="el-icon-check" round size="mini">发布
                           </el-button>
                         </el-col>
@@ -230,24 +227,22 @@
 <script>
   import axios from 'axios'
   import _ from 'lodash'
-  // import VueMarkdown from 'vue-markdown'
-  // axios.defaults.withCredentials=true;
-  // axios.defaults.xsrfCookieName = 'csrftoken';
-  // axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 
   export default {
     name: 'detail',
     data() {
       return {
+        baseurl: 'http://127.0.0.1:8000/',
         article: {},
         detail_url: '',
-        aid: this.$route.path.substr(1),
+        aid: this.$route.path.substr(8),
         textarea_comment_1: '',
         textarea_comment_2: '',
         textarea_reply_1: '',
         textarea_reply_2: '',
         guest: {
+          islogin: false,
           avatar: "https://avatars1.githubusercontent.com/u/26531508?v=4",
           nick: "",
           token: "",
@@ -255,10 +250,8 @@
         },
         cid: 0,
         tid: 0,
-        tonick: '',
         reply: -1,
         isShow: false,
-        tempcommentreplys: {},
         dialogTableVisible: false,
         dialogFormVisible: false,
         form: {
@@ -302,16 +295,6 @@
         this.textarea_comment_2 = '';
       },
 
-      update_reply_data: function (cid, tid, tonick, reply, commentreplys) {
-        // this.isShow = true;
-        // this.dialogFormVisible = true;
-        this.cid = cid;
-        this.tid = tid;
-        this.reply = reply;
-        this.tempcommentreplys = commentreplys;
-        this.tonick = tonick;
-      },
-
       quxiao: function () {
         this.dialogFormVisible = false;
         this.isShow = !this.isShow;
@@ -321,44 +304,32 @@
         $refs.page.click();
       },
 
-      queding: function () {
+      queding: function (aid, cid, tid) {
         this.dialogFormVisible = false;
         this.comment_reply_data = {
           "content": this.textarea_reply_1,
-          "cid": this.cid,
-          "aid": this.aid,
-          "tid": this.tid,
-          "reply": this.reply,
+          "cid": cid,
+          "aid": aid,
+          "tid": tid,
+          "reply": 1,
           "token": this.guest.token,
-          // "token": "c0c7342ed246893749f4549371ec727bdea6da9e",
         };
-        axios.get('http://localhost:8000/blog/createreply', {
+        axios.get(this.baseurl + 'blog/createreply/', {
             params: this.comment_reply_data
           }
         )
           .then((response) => {
             this.guest = response.data.user;
-            this.tempcommentreplys.push({
-              "content": this.textarea_reply_1,
-              "create_time": "刚刚",
-              "to": {
-                "nick": this.tonick,
-              },
-              "author": {
-                "uid": this.guest.uid,
-                "nick": this.guest.nick,
-                "avatar": this.guest.avatar,
-              }
-            });
             this.isShow = !this.isShow;
             this.textarea_reply_1 = '';
             this.textarea_reply_2 = '';
             this.reply_visible = false;
             this.get_guests();
+            location.reload();
           })
           .catch(error => {
             console.log(error);
-            alert('出错啦，不能访问');
+            alert('评论失败');
           });
       },
 
@@ -371,7 +342,7 @@
           "reply": -1,
           "token": this.guest.token,
         };
-        axios.get('http://localhost:8000/blog/createreply', {
+        axios.get(this.baseurl + 'blog/createreply/', {
           params: this.comment_data
         })
           .then((response) => {
@@ -383,7 +354,7 @@
               var comment = {
                 "id": 1,
                 "comment_reply": [],
-                "author": {
+                "guest": {
                   "uid": this.guest.uid,
                   "nick": this.guest.nick,
                   "avatar": this.guest.avatar
@@ -407,16 +378,15 @@
             console.log(error);
             alert('评论出错');
           });
-        // console.log(this.comment_data);
       },
 
       get_guests: function () {
         var comments = eval(this.article.comments);
 
         for (var i = 0; i < comments.length; i++) {
-          this.comment_guests.add(comments[i].author.uid);
+          this.comment_guests.add(comments[i].guest.uid);
           for (var j = 0; j < comments[i].comment_reply.length; j++) {
-            this.comment_guests.add(comments[i].comment_reply[j].author.uid);
+            this.comment_guests.add(comments[i].comment_reply[j].guest.uid);
           }
         }
         this.comment_guest_num = this.comment_guests.size;
@@ -431,8 +401,7 @@
 
 
       login: function () {
-        // this.get_login_url();
-        axios.get('http://localhost:8000/blog/login?state=' + this.aid)
+        axios.get(this.baseurl + 'blog/login/?state=' + this.aid)
           .then(response => {
             console.log(response.data);
             this.login_url = response.data.url;
@@ -442,24 +411,16 @@
           alert('获取login_url失败');
         });
       },
-      // get_login_url: function () {
-      //   axios.get('http://localhost:8000/blog/login/')
-      //     .then(response => {
-      //       console.log(response.data);
-      //       this.login_url = response.data.url;
-      //     }).catch(error => {
-      //     console.log(error);
-      //     alert('获取login_url失败');
-      //     });
-      // },
     },
 
     created() {
-      // axios.defaults.withCredentials=true;
-      // axios.defaults.xsrfCookieName = 'csrftoken';
-      // axios.defaults.xsrfHeaderName = 'X-CSRFToken';
       this.guest.token = this.$cookie.get('token');
-      axios.get('http://localhost:8000/blog/articles/' + this.$route.path.substring(1))
+      // this.guest.token = '5a7e61e3a704581d11c3ceb5af27f1a44f35a9bc';
+      console.log(this.$cookie.get('token'));
+      console.log(this.$cookies.keys());
+      console.log(this.$cookies.get('token'));
+
+      axios.get(this.baseurl + 'blog/articles/' + this.$route.path.substring(8))
         .then(response => {
           this.article = (response.data);
           this.article.create_time = this.article.create_time.replace(/T/, ' ').replace(/-/g, '.').substr(0, 10);
@@ -469,11 +430,11 @@
           alert('获取文章失败');
         });
 
-      axios.get('http://localhost:8000/blog/guest/?token=' + this.guest.token)
+      axios.get(this.baseurl + 'blog/guest/?token=' + this.guest.token)
         .then(response => {
           if (response.status === 200) {
             this.guest = response.data;
-            this.logined = true;
+            this.logined = this.guest.islogin;
           }
         }).catch(error => {
         console.log('未登录');

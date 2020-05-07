@@ -16,11 +16,12 @@
   "dependencies": {
     "axios": "^0.18.0",
     "element-ui": "^2.3.7",
-    "highlight.js": "^9.12.0",
+    "highlight.js": "^9.18.1",
     "lodash": "^4.17.10",
     "require-vuejs": "^1.1.0",
     "vue": "^2.5.2",
     "vue-cookie": "^1.1.4",
+    "vue-cookies": "^1.7.0",
     "vue-highlightjs": "^1.3.3",
     "vue-markdown": "^2.2.4",
     "vue-require": "^1.0.1",

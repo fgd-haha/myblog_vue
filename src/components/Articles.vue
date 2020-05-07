@@ -6,15 +6,15 @@
     <el-main>
       <div class="articles" style="padding-left: 10%; padding-right: 10%; margin-top: 10%;">
         <div v-for="{ id, title, abstract, create_time, click_nums, tags, comments } in this.articles"
-                style="margin-top: 8%;">
+             style="margin-top: 8%;">
 
           <el-row style="margin-bottom: 1%;">
-            <router-link :to="{path: '/' + id}"
+            <router-link :to="{ name: 'article_detail', params: { articleid: id }}"
                          style="font-size:18px; font-weight: bold; color: #333; text-decoration: none;">
               {{title}}
             </router-link>
             <span v-for="tag in tags">
-            <el-tag size="mini" type="info">{{tag.title}}</el-tag>
+            <el-tag size="mini" type="info">{{tag.name}}</el-tag>
               </span>
           </el-row>
 
@@ -28,8 +28,7 @@
             <icon name="comments2" :scale="1.7" style="margin-top: 2px"></icon>
             &nbsp{{comments.length}}
           </el-row>
-
-        </div>>
+        </div>
       </div>
     </el-main>
     <el-aside width="20%" style="background-color: #fff"></el-aside>
@@ -49,13 +48,10 @@
         articles: [],
         tags: [],
         classification: '',
+        baseurl: 'http://127.0.0.1:8000/',
       }
     },
     methods: {
-      // jump: function (article_id) {
-      //   this.detail_url = '/' + article_id;
-      //   this.$router.push({path: this.detail_url})
-      // },
 
       get_time: function () {
         for (let i = 0; i < this.articles.length; i++) {
@@ -67,11 +63,11 @@
     },
 
     created() {
-      axios.get('http://localhost:8000/blog/articles/')
+      axios.get(this.baseurl + 'blog/articles/')
         .then(response => {
           console.log(response);
-          if (this.articles = response.data)
-            this.get_time();
+          this.articles = response.data;
+          this.get_time();
           this.articles.reverse();
         })
         .catch(error => {

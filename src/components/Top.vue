@@ -1,34 +1,28 @@
 <template>
 
-  <el-menu :default-active="activeIndex" router="false" class="el-menu-demo" mode="horizontal" @select="handleSelect"
+  <el-menu :default-active="$route.path" :router="true" class="el-menu-demo" mode="horizontal"
            style="position: fixed; left: 25%; width: 50%; z-index: 1000">
     <el-submenu index="3" style="float: right;">
       <template slot="title">标签</template>
       <div v-for="tag in this.tags">
-        <el-menu-item :index="'3-' + tag.id" :route='"/tag/"+tag.id' @click="reload">{{tag.title}}</el-menu-item>
+        <el-menu-item :index="'3-' + tag.id" :route="{ name: 'tag', params: { tagid: tag.id }}" @click="reload">{{tag.name}}</el-menu-item>
       </div>
     </el-submenu>
 
     <el-submenu index="2" style="float: right;">
       <template slot="title">分类</template>
       <div v-for="fenlei in this.classifications">
-        <el-menu-item :index="'2-' + fenlei.id" :route="'/classification/' + fenlei.id" @click="reload">
-          {{fenlei.title}}
+        <el-menu-item :index="'2-' + fenlei.id" :route="{ name: 'classification', params: { classificationid: fenlei.id }}" @click="reload">
+          {{fenlei.name}}
         </el-menu-item>
       </div>
     </el-submenu>
 
-    <el-menu-item index="1" route="/" style="float: right;">首页</el-menu-item>
+<!--    <el-menu-item index="1" :route="'/myblog/'" style="float: right;">首页</el-menu-item>-->
+    <el-menu-item index="1" :route="{ name: 'articles'}" style="float: right;">首页</el-menu-item>
 
   </el-menu>
 
-  <!--<el-row>-->
-  <!--<el-col :span="14"><div class="grid-content bg-purple-light"></div>-->
-  <!--<el-button style="font-size:15px" type="text"  @click="jump()">首页</el-button>-->
-  <!--<el-button style="font-size:15px" type="text"  @click="jump()">分类</el-button>-->
-  <!--<el-button style="font-size:15px" type="text"  @click="jump()">标签</el-button>-->
-  <!--</el-col>-->
-  <!--</el-row>-->
 </template>
 
 <script>
@@ -38,6 +32,7 @@
     name: "top",
     data() {
       return {
+        baseurl: 'http://127.0.0.1:8000/',
         classifications: [],
         tags: [],
       }
@@ -49,7 +44,7 @@
     },
 
     created() {
-      axios.get('http://localhost:8000/blog/tags/')
+      axios.get(this.baseurl + 'blog/tags/')
         .then(response => {
           console.log(response);
           this.tags = response.data
@@ -59,7 +54,7 @@
           alert('获取标签信息失败');
         });
 
-      axios.get('http://localhost:8000/blog/classifications/')
+      axios.get(this.baseurl + 'blog/classifications/')
         .then(response => {
           console.log(response);
           this.classifications = response.data

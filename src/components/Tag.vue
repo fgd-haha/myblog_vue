@@ -14,7 +14,7 @@
                 {{title}}
               </router-link>
               <span v-for="tag in tags">
-            <el-tag size="mini" type="info">{{tag.title}}</el-tag>
+            <el-tag size="mini" type="info">{{tag.name}}</el-tag>
               </span>
             </el-row>
 
@@ -48,6 +48,7 @@
     components: {Me},
     data() {
       return {
+        baseurl: 'http://127.0.0.1:8000/',
         articles: [],
         tags: [],
         classification: '',
@@ -71,18 +72,19 @@
 
     created() {
       this.tagid = this.$route.path.substr(5, 1);
-      axios.get('http://localhost:8000/blog/articles/')
+      axios.get(this.baseurl + 'blog/articles/')
         .then(response => {
           console.log(response);
           if (this.articles = response.data)
             this.get_time();
+          this.articles.reverse();
+
         })
         .catch(error => {
           console.log(error);
           alert('网络错误，不能访问');
         });
     },
-
   }
 </script>
 

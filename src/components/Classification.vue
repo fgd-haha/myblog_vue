@@ -50,6 +50,7 @@
     components: {Me},
     data() {
       return {
+        baseurl: 'http://127.0.0.1:8000/',
         articles: [],
         tags: [],
         classification_id: this.$route.path.substr(16,1),
@@ -57,10 +58,6 @@
       }
     },
     methods: {
-      // jump: function (article_id) {
-      //   this.detail_url = '/' + article_id;
-      //   this.$router.push({path: this.detail_url})
-      // },
 
       get_time: function () {
         for (let i = 0; i < this.articles.length; i++) {
@@ -73,11 +70,13 @@
 
     created() {
 
-      axios.get('http://localhost:8000/blog/articles/')
+      axios.get(this.baseurl + 'blog/articles/')
         .then(response => {
           console.log(response);
           if (this.articles = response.data)
             this.get_time();
+          this.articles.reverse();
+
         })
         .catch(error => {
           console.log(error);
