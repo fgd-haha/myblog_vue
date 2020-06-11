@@ -48,7 +48,7 @@
         articles: [],
         tags: [],
         classification: '',
-        baseurl: 'http://39.99.48.130/',
+        baseurl: 'http://fanguodong.com/',
       }
     },
     methods: {
@@ -63,7 +63,7 @@
     },
 
     created() {
-      axios.get(this.baseurl + 'blog/articles/')
+      axios.get(this.baseurl + 'api/blog/articles/')
         .then(response => {
           console.log(response);
           this.articles = response.data;

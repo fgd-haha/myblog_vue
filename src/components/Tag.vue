@@ -48,7 +48,7 @@
     components: {Me},
     data() {
       return {
-        baseurl: 'http://39.99.48.130/',
+        baseurl: 'http://fanguodong.com/',
         articles: [],
         tags: [],
         classification: '',
@@ -72,7 +72,7 @@
 
     created() {
       this.tagid = this.$route.path.substr(5, 1);
-      axios.get(this.baseurl + 'blog/articles/')
+      axios.get(this.baseurl + 'api/blog/articles/')
         .then(response => {
           console.log(response);
           if (this.articles = response.data)

@@ -50,7 +50,7 @@
     components: {Me},
     data() {
       return {
-        baseurl: 'http://39.99.48.130/',
+        baseurl: 'http://fanguodong.com/',
         articles: [],
         tags: [],
         classification_id: this.$route.path.substr(16,1),
@@ -70,7 +70,7 @@
 
     created() {
 
-      axios.get(this.baseurl + 'blog/articles/')
+      axios.get(this.baseurl + 'api/blog/articles/')
         .then(response => {
           console.log(response);
           if (this.articles = response.data)

@@ -233,7 +233,7 @@
     name: 'detail',
     data() {
       return {
-        baseurl: 'http://39.99.48.130/',
+        baseurl: 'http://fanguodong.com/',
         article: {},
         detail_url: '',
         aid: this.$route.path.substr(8),
@@ -314,7 +314,7 @@
           "reply": 1,
           "token": this.guest.token,
         };
-        axios.get(this.baseurl + 'blog/createreply/', {
+        axios.get(this.baseurl + 'api/blog/createreply/', {
             params: this.comment_reply_data
           }
         )
@@ -342,7 +342,7 @@
           "reply": -1,
           "token": this.guest.token,
         };
-        axios.get(this.baseurl + 'blog/createreply/', {
+        axios.get(this.baseurl + 'api/blog/createreply/', {
           params: this.comment_data
         })
           .then((response) => {
@@ -401,7 +401,7 @@
 
 
       login: function () {
-        axios.get(this.baseurl + 'blog/login/?state=' + this.aid)
+        axios.get(this.baseurl + 'api/blog/login/?state=' + this.aid)
           .then(response => {
             console.log(response.data);
             this.login_url = response.data.url;
@@ -420,7 +420,7 @@
       console.log(this.$cookies.keys());
       console.log(this.$cookies.get('token'));
 
-      axios.get(this.baseurl + 'blog/articles/' + this.$route.path.substring(8))
+      axios.get(this.baseurl + 'api/blog/articles/' + this.$route.path.substring(8))
         .then(response => {
           this.article = (response.data);
           this.article.create_time = this.article.create_time.replace(/T/, ' ').replace(/-/g, '.').substr(0, 10);
@@ -430,7 +430,7 @@
           alert('获取文章失败');
         });
 
-      axios.get(this.baseurl + 'blog/guest/?token=' + this.guest.token)
+      axios.get(this.baseurl + 'api/blog/guest/?token=' + this.guest.token)
         .then(response => {
           if (response.status === 200) {
             this.guest = response.data;

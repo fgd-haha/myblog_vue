@@ -32,7 +32,7 @@
     name: "top",
     data() {
       return {
-        baseurl: 'http://39.99.48.130/',
+        baseurl: 'http://fanguodong.com/',
         classifications: [],
         tags: [],
       }
@@ -44,7 +44,7 @@
     },
 
     created() {
-      axios.get(this.baseurl + 'blog/tags/')
+      axios.get(this.baseurl + 'api/blog/tags/')
         .then(response => {
           console.log(response);
           this.tags = response.data
@@ -54,7 +54,7 @@
           alert('获取标签信息失败');
         });
 
-      axios.get(this.baseurl + 'blog/classifications/')
+      axios.get(this.baseurl + 'api/blog/classifications/')
         .then(response => {
           console.log(response);
           this.classifications = response.data
