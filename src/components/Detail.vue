@@ -233,7 +233,7 @@
     name: 'detail',
     data() {
       return {
-        baseurl: 'http://fanguodong.com/',
+        baseurl: this.GLOBAL.domain,
         article: {},
         detail_url: '',
         aid: this.$route.path.substr(8),
@@ -314,7 +314,7 @@
           "reply": 1,
           "token": this.guest.token,
         };
-        axios.get(this.baseurl + 'api/blog/createreply/', {
+        axios.get(this.baseurl + 'api/comment/createreply/', {
             params: this.comment_reply_data
           }
         )
@@ -342,7 +342,7 @@
           "reply": -1,
           "token": this.guest.token,
         };
-        axios.get(this.baseurl + 'api/blog/createreply/', {
+        axios.get(this.baseurl + 'api/comment/createreply/', {
           params: this.comment_data
         })
           .then((response) => {
@@ -401,7 +401,7 @@
 
 
       login: function () {
-        axios.get(this.baseurl + 'api/blog/login/?state=' + this.aid)
+        axios.get(this.baseurl + 'api/oauth/login/?state=' + this.aid)
           .then(response => {
             console.log(response.data);
             this.login_url = response.data.url;
@@ -430,7 +430,7 @@
           alert('获取文章失败');
         });
 
-      axios.get(this.baseurl + 'api/blog/guest/?token=' + this.guest.token)
+      axios.get(this.baseurl + 'api/oauth/guest/?token=' + this.guest.token)
         .then(response => {
           if (response.status === 200) {
             this.guest = response.data;

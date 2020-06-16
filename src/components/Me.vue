@@ -7,7 +7,7 @@
       <!--<h3>{{name}}</h3>-->
       <span>{{email}}</span>
     </div>
-    <router-link :to="{name: articles}"><img style="margin-top: 100px;" @click="jump_github()" src="./../assets/GitHub-Mark-32px.png"/></router-link>
+    <router-link :to="{name: 'articles'}"><img style="margin-top: 100px;" @click="jump_github()" src="./../assets/GitHub-Mark-32px.png"/></router-link>
   </div>
 </template>
 

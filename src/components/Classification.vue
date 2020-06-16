@@ -50,7 +50,7 @@
     components: {Me},
     data() {
       return {
-        baseurl: 'http://fanguodong.com/',
+        baseurl: this.GLOBAL.domain,
         articles: [],
         tags: [],
         classification_id: this.$route.path.substr(16,1),

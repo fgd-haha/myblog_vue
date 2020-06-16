@@ -12,6 +12,7 @@ import Icon from 'vue-svg-icon/Icon.vue';
 import 'highlight.js/styles/googlecode.css'
 import hljs from 'highlight.js'
 import 'lodash'
+import global_ from './components/Global'
 
 Vue.config.productionTip = false;
 
@@ -19,8 +20,10 @@ Vue.use(ElementUI);
 
 Vue.use(require('vue-cookie'));
 
-Vue.use(VueCookies)
+Vue.use(VueCookies);
 Vue.use(require('vue-cookies'));
+
+Vue.prototype.GLOBAL = global_;
 
 Vue.component('vue-markdown', VueMarkdown);
 

@@ -4,7 +4,7 @@
       <Me></Me>
     </el-aside>
     <el-main>
-      <div class="articles" style="padding-left: 10%; padding-right: 10%; margin-top: 10%;">
+      <div style="padding-left: 10%; padding-right: 10%; margin-top: 10%;">
         <div v-for="{ id, title, abstract, create_time, click_nums, tags, comments } in this.articles"
              style="margin-top: 8%;">
 
@@ -48,7 +48,7 @@
         articles: [],
         tags: [],
         classification: '',
-        baseurl: 'http://fanguodong.com/',
+        baseurl: this.GLOBAL.domain,
       }
     },
     methods: {

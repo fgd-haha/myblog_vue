@@ -48,7 +48,7 @@
     components: {Me},
     data() {
       return {
-        baseurl: 'http://fanguodong.com/',
+        baseurl: this.GLOBAL.domain,
         articles: [],
         tags: [],
         classification: '',

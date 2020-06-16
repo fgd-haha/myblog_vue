@@ -32,7 +32,7 @@
     name: "top",
     data() {
       return {
-        baseurl: 'http://fanguodong.com/',
+        baseurl: this.GLOBAL.domain,
         classifications: [],
         tags: [],
       }
