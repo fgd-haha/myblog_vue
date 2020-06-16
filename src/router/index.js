@@ -13,6 +13,11 @@ Vue.use(Router)
 export default new Router({
   mode: 'history',
   routes: [
+
+    {
+      path: '/',
+      redirect: {name: 'articles'}
+    },
     {
       path: '/myblog/',
       name: 'articles',
