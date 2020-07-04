@@ -5,21 +5,28 @@
     <el-submenu index="3" style="float: right;">
       <template slot="title">标签</template>
       <div v-for="tag in this.tags">
-        <el-menu-item :index="'3-' + tag.id" :route="{ name: 'tag', params: { tagid: tag.id }}" @click="reload">{{tag.name}}</el-menu-item>
+        <el-menu-item :index="'3-' + tag.id"
+                      :route="{ name: 'articles', query: { tagid: tag.id}}" @click="reload">
+          {{tag.name}}
+        </el-menu-item>
       </div>
     </el-submenu>
 
     <el-submenu index="2" style="float: right;">
       <template slot="title">分类</template>
       <div v-for="fenlei in this.classifications">
-        <el-menu-item :index="'2-' + fenlei.id" :route="{ name: 'classification', params: { classificationid: fenlei.id }}" @click="reload">
+        <el-menu-item :index="'2-' + fenlei.id"
+                      :route="{ name: 'articles', query: {classificationid: fenlei.id }}" @click="reload">
           {{fenlei.name}}
         </el-menu-item>
       </div>
     </el-submenu>
 
-<!--    <el-menu-item index="1" :route="'/myblog/'" style="float: right;">首页</el-menu-item>-->
-    <el-menu-item index="1" :route="{ name: 'articles'}" style="float: right;">首页</el-menu-item>
+    <el-menu-item index="1" :route="{ name: 'articles'}"
+                  style="float: right;"
+                  @click="reload"
+    >首页
+    </el-menu-item>
 
   </el-menu>
 
@@ -51,7 +58,6 @@
         })
         .catch(error => {
           console.log(error);
-          alert('获取标签信息失败');
         });
 
       axios.get(this.baseurl + 'api/blog/classifications/')
@@ -61,7 +67,6 @@
         })
         .catch(error => {
           console.log(error);
-          alert('获取分类信息失败');
         });
     }
   }

@@ -63,7 +63,12 @@
     },
 
     created() {
-      axios.get(this.baseurl + 'api/blog/articles/')
+      axios.get(this.baseurl + 'api/blog/articles/', {
+        params: {
+          "classificationid": this.$route.query.classificationid,
+          "tagid": this.$route.query.tagid
+        }
+      })
         .then(response => {
           console.log(response);
           this.articles = response.data;
@@ -72,7 +77,6 @@
         })
         .catch(error => {
           console.log(error);
-          alert('网络错误，不能访问');
         });
     },
 
