@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Articles from '@/components/Articles'
-import Detail from '@/components/Detail'
-import Page_404 from '@/components/Page_404'
+import Articles from '@/components/main/Articles'
+import Detail from '@/components/main/ArticleDetail'
+import Page_404 from '@/components/util/Page_404'
 
 Vue.use(Router)
 

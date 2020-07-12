@@ -12,7 +12,7 @@ import Icon from 'vue-svg-icon/Icon.vue';
 import 'highlight.js/styles/googlecode.css'
 import hljs from 'highlight.js'
 import 'lodash'
-import global_ from './components/Global'
+import global_ from './components/util/Global'
 
 Vue.config.productionTip = false;
 
