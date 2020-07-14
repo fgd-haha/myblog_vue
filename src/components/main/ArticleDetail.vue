@@ -41,7 +41,7 @@
         methods: {},
 
         created() {
-            var article_id = this.$route.path.substring(8)
+            var article_id = this.$route.path.substring(8).split('/')[0]
             axios.get(this.baseurl + 'api/blog/article/' + article_id)
                 .then(response => {
                     this.article = (response.data);

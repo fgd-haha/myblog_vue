@@ -4,7 +4,7 @@
         <div style="margin-top: 20%;">
             <el-row v-if=!logined>
                 <div @click="login()">
-                    <img style="margin-bottom: 1%" src="src/assets/GitHub-Mark-32px.png"/>
+                    <img style="margin-bottom: 1%" src="@/assets/GitHub-Mark-32px.png"/>
                     <el-button type="text" style="font-size: large; color: black;">登录</el-button>
                 </div>
             </el-row>
@@ -13,8 +13,8 @@
                     <el-popover
                         placement="right"
                         trigger="click">
-                        <img :src=guest.avatar>
-                        <img :src=guest.avatar width="50px" slot="reference">
+                        <img :src=guest.img>
+                        <img :src=guest.img width="50px" slot="reference">
                     </el-popover>
                 </el-col>
                 <el-col :span="20" style="font-size: medium; margin-top: 1%">
@@ -81,8 +81,8 @@
                 <el-popover
                     placement="right"
                     trigger="click">
-                    <img :src=comment.guest.avatar>
-                    <img :src=comment.guest.avatar width="50px" slot="reference">
+                    <img :src=comment.guest.img>
+                    <img :src=comment.guest.img width="50px" slot="reference">
                 </el-popover>
             </el-col>
             <!--评论-->
@@ -145,8 +145,8 @@
                         <el-popover
                             placement="right"
                             trigger="click">
-                            <img :src=reply.guest.avatar>
-                            <img :src=reply.guest.avatar width="50px" slot="reference">
+                            <img :src=reply.guest.img>
+                            <img :src=reply.guest.img width="50px" slot="reference">
                         </el-popover>
                     </el-col>
 
@@ -230,7 +230,7 @@
                 textarea_reply_2: '',
                 guest: {
                     islogin: false,
-                    avatar: "",
+                    img: "",
                     nick: "",
                     token: "",
                     uid: 1
@@ -327,7 +327,7 @@
                                 "guest": {
                                     "uid": this.guest.uid,
                                     "nick": this.guest.nick,
-                                    "avatar": this.guest.avatar
+                                    "img": this.guest.img
                                 },
                                 "create_time": "刚刚",
                                 "content": this.textarea_comment_1
@@ -387,7 +387,7 @@
             console.log(this.$cookie.get('token'));
             console.log(this.$cookies.keys());
             console.log(this.$cookies.get('token'));
-            var article_id = this.$route.path.substring(8)
+            var article_id = this.$route.path.substring(8).split('/')[0]
             axios.get(this.baseurl + 'api/comment/get/', {params: {'article_id': article_id}})
                 .then(response => {
                     this.comments = (response.data);
