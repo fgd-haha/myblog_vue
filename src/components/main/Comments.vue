@@ -122,13 +122,13 @@
                             </el-row>
                             <el-row style="margin-bottom: 0; margin-top: 0">
                                 <el-col :span="2" :offset="18">
-                                    <el-button @click="quxiao()" @click.native.prevent="$refs.page.click()" type="text"
+                                    <el-button @click="quxiao()" @click.native.prevent="this.$refs.page.click()" type="text"
                                                icon="el-icon-close" round size="mini">取消
                                     </el-button>
                                 </el-col>
                                 <el-col :span="2" :offset="1">
                                     <el-button @click="queding(aid=aid,cid=comment.id, tid=comment.guest.uid)"
-                                               @click.native.prevent="$refs.page.click()" type="success"
+                                               @click.native.prevent="this.$refs.page.click()" type="success"
                                                icon="el-icon-check" round size="mini">发布
                                     </el-button>
                                 </el-col>
@@ -189,14 +189,14 @@
                                     </el-row>
                                     <el-row style="margin-top: 0; margin-bottom: 0">
                                         <el-col :span="2" :offset="18">
-                                            <el-button @click.native.prevent="$refs.page.click()" @click="quxiao()"
+                                            <el-button @click.native.prevent="this.$refs.page.click()" @click="quxiao()"
                                                        type="text"
                                                        icon="el-icon-close" round size="mini">取消
                                             </el-button>
                                         </el-col>
                                         <el-col :span="2" :offset="1">
                                             <el-button @click="queding(aid=aid,cid=comment.id, tid=reply.to.uid)"
-                                                       @click.native.prevent="$refs.page.click()" type="success"
+                                                       @click.native.prevent="this.$refs.page.click()" type="success"
                                                        icon="el-icon-check" round size="mini">发布
                                             </el-button>
                                         </el-col>
@@ -272,7 +272,7 @@
                 this.textarea_reply_1 = '';
                 this.textarea_reply_2 = '';
 
-                $refs.page.click();
+                this.$refs.page.click();
             },
 
             queding: function (aid, cid, tid) {
