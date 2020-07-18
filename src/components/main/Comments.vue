@@ -223,7 +223,7 @@
                 comments: [],
                 baseurl: this.GLOBAL.domain,
                 detail_url: '',
-                aid: this.$route.path.substr(8),
+                aid: this.$route.path.substr(8).split('/')[0],
                 textarea_comment_1: '',
                 textarea_comment_2: '',
                 textarea_reply_1: '',
