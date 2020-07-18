@@ -74,7 +74,7 @@
                 <el-button class="button" type="text" @click="comment_reverse(false)">按时间倒序</el-button>
             </el-col>
         </el-row>
-        <el-row v-for="comment in this.comments" style="margin-bottom: 0">
+        <el-row v-for="(comment, c_index) in this.comments" style="margin-bottom: 0">
             <div style="margin: 0 6px 10px 6px;border-top:1px dotted #C0C0C0;"></div>
             <!--图片-->
             <el-col :span="2" :offset="1">
@@ -96,11 +96,12 @@
                 <!--评论时间，回复按钮-->
                 <el-row style="margin-bottom: 0; color: #909399">
                     {{comment.create_time.replace(/T/, ' ').replace(/-/g, '.').substr(0, 19)}} ·
-                    <el-popover placement="right" trigger="click" width="1000">
+                    <el-popover placement="right" trigger="click" width="1000" v-model="comment.show">
                         <el-button type="text" icon="el-icon-edit"
                                    style="color:#909399"
                                    slot="reference"
-                                   :disabled="!logined">回复
+                                   :disabled="!logined"
+                                   @click="comment.show=true">回复
                         </el-button>
 
                         <div id="reply_block">
@@ -122,13 +123,13 @@
                             </el-row>
                             <el-row style="margin-bottom: 0; margin-top: 0">
                                 <el-col :span="2" :offset="18">
-                                    <el-button @click="quxiao()" @click.native.prevent="this.$refs.page.click()" type="text"
+                                    <el-button @click="quxiao(c_index, null)" type="text"
                                                icon="el-icon-close" round size="mini">取消
                                     </el-button>
                                 </el-col>
                                 <el-col :span="2" :offset="1">
-                                    <el-button @click="queding(aid=aid,cid=comment.id, tid=comment.guest.uid)"
-                                               @click.native.prevent="this.$refs.page.click()" type="success"
+                                    <el-button @click="queding(aid=aid,cid=comment.id, tid=comment.guest.uid, c_index, null)"
+                                               type="success"
                                                icon="el-icon-check" round size="mini">发布
                                     </el-button>
                                 </el-col>
@@ -137,7 +138,7 @@
                     </el-popover>
                 </el-row>
                 <!--回复-->
-                <el-row v-for="reply in comment.comment_reply" style="margin-bottom: 0">
+                <el-row v-for="(reply, r_index) in comment.comment_reply" style="margin-bottom: 0">
                     <!--线-->
                     <div style="margin: 0 6px 10px 6px;border-top:1px dotted #C0C0C0;"></div>
                     <!--头像-->
@@ -164,11 +165,12 @@
                         <!--回复时间,按钮-->
                         <el-row style="margin-bottom: 0; color: #909399;">
                             {{reply.create_time.replace('T', ' ').replace(/-/g, '.').substr(0, 19)}} ·
-                            <el-popover placement="right" trigger="click" width="1000">
+                            <el-popover placement="right" trigger="click" width="1000" v-model="reply.show">
                                 <el-button type="text" icon="el-icon-edit"
                                            style="color:#909399"
                                            slot="reference"
-                                           :disabled="!logined">回复
+                                           :disabled="!logined"
+                                            @click="reply.show=true">回复
                                 </el-button>
 
                                 <div>
@@ -189,14 +191,15 @@
                                     </el-row>
                                     <el-row style="margin-top: 0; margin-bottom: 0">
                                         <el-col :span="2" :offset="18">
-                                            <el-button @click.native.prevent="this.$refs.page.click()" @click="quxiao()"
+                                            <el-button @click="quxiao(c_index, r_index)"
                                                        type="text"
-                                                       icon="el-icon-close" round size="mini">取消
+                                                       icon="el-icon-close"
+                                                       round size="mini">取消
                                             </el-button>
                                         </el-col>
                                         <el-col :span="2" :offset="1">
-                                            <el-button @click="queding(aid=aid,cid=comment.id, tid=reply.to.uid)"
-                                                       @click.native.prevent="this.$refs.page.click()" type="success"
+                                            <el-button @click="queding(aid=aid,cid=comment.id, tid=reply.to.uid, c_index, r_index)"
+                                                       type="success"
                                                        icon="el-icon-check" round size="mini">发布
                                             </el-button>
                                         </el-col>
@@ -266,16 +269,20 @@
                 this.textarea_comment_2 = '';
             },
 
-            quxiao: function () {
+            quxiao: function (c_index, r_index) {
                 this.dialogFormVisible = false;
-                this.isShow = !this.isShow;
+                this.isShow = false;
                 this.textarea_reply_1 = '';
                 this.textarea_reply_2 = '';
 
-                this.$refs.page.click();
+                if (r_index == null) {
+                    this.$set(this.comments[c_index], 'show', false);
+                } else {
+                    this.$set(this.comments[c_index].comment_reply[r_index], 'show', false);
+                }
             },
 
-            queding: function (aid, cid, tid) {
+            queding: function (aid, cid, tid, r_index, c_index) {
                 this.dialogFormVisible = false;
                 this.comment_reply_data = {
                     "content": this.textarea_reply_1,
@@ -291,7 +298,7 @@
                 )
                     .then((response) => {
                         this.guest = response.data.user;
-                        this.isShow = !this.isShow;
+                        this.isShow = true;
                         this.textarea_reply_1 = '';
                         this.textarea_reply_2 = '';
 
@@ -302,6 +309,11 @@
                         console.log(error);
                         alert('评论失败');
                     });
+                if (r_index == null) {
+                    this.$set(this.comments[c_index], 'show', false);
+                } else {
+                    this.$set(this.comments[c_index].comment_reply[r_index], 'show', false);
+                }
             },
 
             add_a_comment() {
@@ -390,8 +402,17 @@
             var article_id = this.$route.path.substring(8).split('/')[0]
             axios.get(this.baseurl + 'api/comment/get/', {params: {'article_id': article_id}})
                 .then(response => {
-                    this.comments = (response.data);
-                })
+                        var comments = response.data;
+
+                        for (var i = 0; i < comments.length; i++) {
+                            comments[i]['show'] = false;
+                            for (var j = 0; j < comments[i]['comment_reply'].length; j++) {
+                                comments[i]['comment_reply'][j]['show'] = false;
+                            }
+                        }
+                        this.comments = comments;
+                    }
+                )
                 .catch(error => {
                     console.log('获取评论失败');
                 });
