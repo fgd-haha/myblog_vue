@@ -22,7 +22,6 @@
 </template>
 <script>
     import axios from 'axios'
-    import _ from 'lodash'
     import Comments from '@/components/main/Comments'
 
 
@@ -45,69 +44,27 @@
             axios.defaults.xsrfHeaderName = 'X-CSRFToken';
             axios.defaults.xsrfCookieName = 'csrftoken';
 
-            var article_id = this.$route.path.substring(8).split('/')[0]
+            var article_id = this.$route.path.substring(8).split('/')[0];
             axios.get(this.baseurl + 'api/blog/article/' + article_id)
                 .then(response => {
                     this.article = (response.data);
                     this.article.create_time = this.article.create_time.replace(/T/, ' ').replace(/-/g, '.').substr(0, 10);
                 })
                 .catch(error => {
+                    console.log(error);
                     console.log('获取文章失败');
                 });
         },
     }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style scoped>
-    .el-row {
-        margin-bottom: 20px;
-    }
-
     :last-child {
         margin-bottom: 0;
     }
 
-    .el-col {
-        border-radius: 4px;
-    }
-
-    .bg-purple-dark {
-        background: #99a9bf;
-    }
-
-    .bg-purple {
-        background: #d3dce6;
-    }
-
-    .bg-purple-light {
-        background: #e5e9f2;
-    }
-
-    .grid-content {
-        border-radius: 4px;
-        min-height: 36px;
-    }
-
-    .row-bg {
-        padding: 10px 0;
-        background-color: #f9fafc;
-    }
-
     img:hover {
         cursor: pointer;
-    }
-
-    .button {
-        color: #969696;
-    }
-
-    .button:hover {
-        color: #2f2f2f;
-    }
-
-    .button:focus {
-        color: #2f2f2f;
     }
 </style>
