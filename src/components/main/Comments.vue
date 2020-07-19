@@ -292,10 +292,8 @@
                     "reply": 1,
                     "token": this.guest.token,
                 };
-                axios.post(this.baseurl + 'api/comment/add/', {
-                        params: this.comment_reply_data
-                    }
-                )
+
+                axios.post(this.baseurl + 'api/comment/add/', this.qs.stringify(this.comment_reply_data))
                     .then((response) => {
                         this.guest = response.data.user;
                         this.isShow = true;
