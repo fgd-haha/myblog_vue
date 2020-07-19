@@ -7,7 +7,7 @@
                     <i class="el-icon-date" style="margin-top: 2px"></i>&nbsp{{this.article.create_time}}&nbsp&nbsp
                     <i class="el-icon-view" style="margin-top: 2px"></i>&nbsp{{this.article.click_nums}}&nbsp&nbsp
                     <icon name="comments2" :scale="1.5" style="margin-top: 3px"></icon>
-                                                  &nbsp{{this.article.comments_num}}
+                    &nbsp{{this.article.comments_num}}
                 </el-row>
 
                 <!--博客主体-->
@@ -41,6 +41,10 @@
         methods: {},
 
         created() {
+            axios.defaults.withCredentials = true;
+            axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+            axios.defaults.xsrfCookieName = 'csrftoken';
+
             var article_id = this.$route.path.substring(8).split('/')[0]
             axios.get(this.baseurl + 'api/blog/article/' + article_id)
                 .then(response => {
@@ -59,13 +63,12 @@
 <style scoped>
     .el-row {
         margin-bottom: 20px;
+    }
 
-    &
     :last-child {
         margin-bottom: 0;
     }
 
-    }
     .el-col {
         border-radius: 4px;
     }
@@ -91,13 +94,6 @@
         padding: 10px 0;
         background-color: #f9fafc;
     }
-
-    /*img {*/
-    /*width: 100%;*/
-    /*border-radius: 2px;*/
-    /*box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.5);*/
-    /*transition: width 1s;*/
-    /*}*/
 
     img:hover {
         cursor: pointer;
