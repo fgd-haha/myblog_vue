@@ -13,6 +13,8 @@ import 'highlight.js/styles/googlecode.css'
 import hljs from 'highlight.js'
 import 'lodash'
 import global_ from './components/util/Global'
+import qs from 'qs'
+
 
 Vue.config.productionTip = false;
 
@@ -24,6 +26,7 @@ Vue.use(VueCookies);
 Vue.use(require('vue-cookies'));
 
 Vue.prototype.GLOBAL = global_;
+Vue.prototype.qs = qs;
 
 Vue.component('vue-markdown', VueMarkdown);
 
