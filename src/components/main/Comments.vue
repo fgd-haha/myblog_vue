@@ -128,9 +128,10 @@
                                     </el-button>
                                 </el-col>
                                 <el-col :span="2" :offset="1">
-                                    <el-button @click="queding(aid=aid,cid=comment.id, tid=comment.guest.uid, c_index, null)"
-                                               type="success"
-                                               icon="el-icon-check" round size="mini">发布
+                                    <el-button
+                                        @click="queding(aid=aid,cid=comment.id, tid=comment.guest.uid, c_index, null)"
+                                        type="success"
+                                        icon="el-icon-check" round size="mini">发布
                                     </el-button>
                                 </el-col>
                             </el-row>
@@ -170,7 +171,7 @@
                                            style="color:#909399"
                                            slot="reference"
                                            :disabled="!logined"
-                                            @click="reply.show=true">回复
+                                           @click="reply.show=true">回复
                                 </el-button>
 
                                 <div>
@@ -198,9 +199,10 @@
                                             </el-button>
                                         </el-col>
                                         <el-col :span="2" :offset="1">
-                                            <el-button @click="queding(aid=aid,cid=comment.id, tid=reply.to.uid, c_index, r_index)"
-                                                       type="success"
-                                                       icon="el-icon-check" round size="mini">发布
+                                            <el-button
+                                                @click="queding(aid=aid,cid=comment.id, tid=reply.to.uid, c_index, r_index)"
+                                                type="success"
+                                                icon="el-icon-check" round size="mini">发布
                                             </el-button>
                                         </el-col>
                                     </el-row>
@@ -241,7 +243,6 @@
                 cid: 0,
                 tid: 0,
                 reply: -1,
-                isShow: false,
                 dialogFormVisible: false,
                 state: '',
                 login_url: '',
@@ -259,21 +260,25 @@
 
             }, 300),
 
+            clear_input: function () {
+                this.textarea_reply_1 = '';
+                this.textarea_reply_2 = '';
+                this.textarea_comment_1 = '';
+                this.textarea_comment_2 = '';
+            },
+
             display_comment_block: function () {
                 document.getElementById("comment_block").style.display = "";
             },
 
             cancle_comment: function () {
                 document.getElementById("comment_block").style.display = "none";
-                this.textarea_comment_1 = '';
-                this.textarea_comment_2 = '';
+                this.clear_input();
             },
 
             quxiao: function (c_index, r_index) {
                 this.dialogFormVisible = false;
-                this.isShow = false;
-                this.textarea_reply_1 = '';
-                this.textarea_reply_2 = '';
+                this.clear_input();
 
                 if (r_index == null) {
                     this.$set(this.comments[c_index], 'show', false);
@@ -295,13 +300,10 @@
 
                 axios.post(this.baseurl + 'api/comment/add/', this.qs.stringify(this.comment_reply_data))
                     .then((response) => {
-                        this.guest = response.data.user;
-                        this.isShow = true;
-                        this.textarea_reply_1 = '';
-                        this.textarea_reply_2 = '';
-
+                        console.log('评论返回:' + response.data);
+                        this.clear_input();
+                        this.comments = response.data;
                         this.get_guests();
-                        location.reload();
                     })
                     .catch(error => {
                         console.log(error);
@@ -323,39 +325,21 @@
                     "reply": -1,
                     "token": this.guest.token,
                 };
-                axios.post(this.baseurl + 'api/comment/add/', {
-                    params: this.comment_data
-                })
+                axios.post(this.baseurl + 'api/comment/add/', this.qs.stringify(this.comment_data))
                     .then((response) => {
-                        if (response.data.hasOwnProperty("url")) {
-                            window.location.href = response.data.url;
-                        } else if (response.data.hasOwnProperty("user")) {
-                            this.guest = response.data.user;
-                            var comment = {
-                                "id": 1,
-                                "comment_reply": [],
-                                "guest": {
-                                    "uid": this.guest.uid,
-                                    "nick": this.guest.nick,
-                                    "img": this.guest.img
-                                },
-                                "create_time": "刚刚",
-                                "content": this.textarea_comment_1
-                            };
-                            if (this.comment_order === true) {
-                                this.comments.push(comment);
-                            } else {
-                                this.comments.unshift(comment);
+                            if (response.data.hasOwnProperty("url")) {
+                                window.location.href = response.data.url;
+                            } else if (response.data != null) {
+                                console.log('评论返回:' + response.data);
+                                this.clear_input();
+                                this.comments = response.data;
+                                this.get_guests();
                             }
-                            this.textarea_comment_1 = '';
-                            this.textarea_comment_2 = '';
-                            document.getElementById("comment_block").style.display = "none";
-                            this.get_guests();
                         }
-                    })
+                    )
                     .catch(error => {
                         console.log(error);
-                        alert('评论出错');
+                        alert('评论失败');
                     });
             },
 
