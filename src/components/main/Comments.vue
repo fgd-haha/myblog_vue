@@ -108,7 +108,7 @@
                                 </el-col>
                                 <el-col :span="2" :offset="1">
                                     <el-button
-                                        @click="queding(aid=aid,cid=comment.id, tid=comment.guest.uid, c_index, null)"
+                                        @click="queding(aid=article_id,cid=comment.id, tid=comment.guest.uid, c_index, null)"
                                         type="success"
                                         icon="el-icon-check" round size="mini">发布
                                     </el-button>
@@ -179,7 +179,7 @@
                                         </el-col>
                                         <el-col :span="2" :offset="1">
                                             <el-button
-                                                @click="queding(aid=aid,cid=comment.id, tid=reply.to.uid, c_index, r_index)"
+                                                @click="queding(aid=article_id,cid=comment.id, tid=reply.to.uid, c_index, r_index)"
                                                 type="success"
                                                 icon="el-icon-check" round size="mini">发布
                                             </el-button>
