@@ -1,27 +1,6 @@
 <template>
     <div>
-        <!--登录按钮-->
-        <div style="margin-top: 20%;">
-            <el-row v-if=!logined>
-                <div @click="login()">
-                    <img style="margin-bottom: 1%" src="@/assets/GitHub-Mark-32px.png"/>
-                    <el-button type="text" style="font-size: large; color: black;">登录</el-button>
-                </div>
-            </el-row>
-            <el-row v-if=logined>
-                <el-col :span="2">
-                    <el-popover
-                        placement="right"
-                        trigger="click">
-                        <img :src=guest.img>
-                        <img :src=guest.img width="50px" slot="reference">
-                    </el-popover>
-                </el-col>
-                <el-col :span="20" style="font-size: medium; margin-top: 1%">
-                    {{guest.nick}}
-                </el-col>
-            </el-row>
-        </div>
+        <Login :logined="logined" :baseurl="baseurl" :article_id="article_id" :guest="guest"></Login>
 
         <!--评论框-->
         <div style="margin-bottom: 10%;">
@@ -32,7 +11,7 @@
                               class="textarea"
                               type="textarea"
                               :autosize="{ minRows: 5, maxRows: 40}"
-                              placeholder="支持markdown"
+                              placeholder="github账号或微信账号登录后评论，支持markdown"
                               v-model.lazy="textarea_comment_1" @input="update_textarea()"
                               auto-complete="true"
                               @focus="display_comment_block()"
@@ -74,7 +53,7 @@
                 <el-button class="button" type="text" @click="comment_reverse(false)">按时间倒序</el-button>
             </el-col>
         </el-row>
-        <el-row v-for="(comment, c_index) in this.comments" style="margin-bottom: 0">
+        <el-row v-for="(comment, c_index) in this.comments">
             <div style="margin: 0 6px 10px 6px;border-top:1px dotted #C0C0C0;"></div>
             <!--图片-->
             <el-col :span="2" :offset="1">
@@ -109,7 +88,7 @@
                                 <el-col :span="12">
                                     <el-input type="textarea"
                                               :autosize="{ minRows: 5, maxRows: 40}"
-                                              placeholder="支持markdown"
+                                              placeholder="github账号或微信账号登录后评论，支持markdown"
                                               v-model.lazy="textarea_reply_1" @input="update_textarea()"
                                               auto-complete="true"
                                               autofocus="true"
@@ -179,7 +158,7 @@
                                         <el-col :span="12">
                                             <el-input type="textarea"
                                                       :autosize="{ minRows: 5, maxRows: 40}"
-                                                      placeholder="支持markdown"
+                                                      placeholder="github账号或微信账号登录后评论，支持markdown"
                                                       v-model.lazy="textarea_reply_1" @input="update_textarea()"
                                                       auto-complete="true"
                                                       autofocus="true"
@@ -219,16 +198,22 @@
 <script>
     import axios from 'axios'
     import _ from 'lodash'
-    import Comments from '@/components/main/Comments'
+    import Login from '@/components/util/Login'
 
     export default {
         name: 'comments',
+
+        props: ['article_id'],
+
+        components: {
+            Login
+        },
+
         data() {
             return {
                 comments: [],
                 baseurl: this.GLOBAL.domain,
                 detail_url: '',
-                aid: this.$route.path.substr(8).split('/')[0],
                 textarea_comment_1: '',
                 textarea_comment_2: '',
                 textarea_reply_1: '',
@@ -240,12 +225,9 @@
                     token: "",
                     uid: 1
                 },
-                cid: 0,
-                tid: 0,
                 reply: -1,
                 dialogFormVisible: false,
                 state: '',
-                login_url: '',
                 logined: false,
                 comment_guests: new Set(),
                 comment_guest_num: 0,
@@ -320,7 +302,7 @@
                 this.comment_data = {
                     "content": this.textarea_comment_1,
                     "cid": -1,
-                    "aid": this.aid,
+                    "aid": this.article_id,
                     "tid": -1,
                     "reply": -1,
                     "token": this.guest.token,
@@ -362,18 +344,6 @@
                 }
             },
 
-
-            login: function () {
-                axios.get(this.baseurl + 'api/oauth/login/?state=' + this.aid)
-                    .then(response => {
-                        console.log(response.data);
-                        this.login_url = response.data.url;
-                        window.location.href = this.login_url;
-                    }).catch(error => {
-                    console.log(error);
-                    alert('获取login_url失败');
-                });
-            },
         },
 
         created() {
@@ -381,8 +351,8 @@
             console.log(this.$cookie.get('token'));
             console.log(this.$cookies.keys());
             console.log(this.$cookies.get('token'));
-            var article_id = this.$route.path.substring(8).split('/')[0]
-            axios.get(this.baseurl + 'api/comment/get/', {params: {'article_id': article_id}})
+
+            axios.get(this.baseurl + 'api/comment/get/', {params: {'article_id': this.article_id}})
                 .then(response => {
                         var comments = response.data;
 
