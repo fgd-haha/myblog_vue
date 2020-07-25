@@ -1,10 +1,7 @@
 <template>
-  <!--<div class="Me" style="position: relative;">-->
-  <div class="Me" style="position: fixed; left: 8%; ">
-    <!--<img src="../assets/shuye.jpg" style="width: 100px; margin-top: 150px">-->
+  <div class="Me" style="position: fixed; left: 8%;">
     <img src="../assets/shuye2.jpg" style="width: 100px; margin-top: 150px">
       <div>
-      <!--<h3>{{name}}</h3>-->
       <span>{{email}}</span>
     </div>
     <router-link :to="{name: 'articles'}"><img style="margin-top: 100px;" @click="jump_github()" src="./../assets/GitHub-Mark-32px.png"/></router-link>

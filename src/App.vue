@@ -5,12 +5,15 @@
                 <top></top>
             </el-header>
             <el-container>
-                <el-aside>
+                <el-aside width="20%">
                     <Left></Left>
                 </el-aside>
                 <el-main>
                     <router-view></router-view>
                 </el-main>
+                <el-aside width="20%">
+                    <Right></Right>
+                </el-aside>
             </el-container>
 
         </el-container>
@@ -41,7 +44,9 @@
         margin: 0px;
         padding: 0px;
     }
+</style>
 
+<style scoped>
     .el-header, .el-footer {
         background-color: #fff;
         color: #333;
@@ -53,27 +58,14 @@
         background-color: #fff;
         color: #333;
         text-align: center;
-        /*line-height: 200px;*/
     }
 
     .el-main {
-        background-color: #fff;;
+        background-color: #fff;
+        /*background-color: #2c3e50;*/
         color: #333;
         text-align: left;
-        padding: 0
+        padding: 0;
         /*line-height: 50px;*/
-    }
-
-    body > .el-container {
-        margin-bottom: 40px;
-    }
-
-    .el-container:nth-child(5) .el-aside,
-    .el-container:nth-child(6) .el-aside {
-        line-height: 260px;
-    }
-
-    .el-container:nth-child(7) .el-aside {
-        line-height: 320px;
     }
 </style>

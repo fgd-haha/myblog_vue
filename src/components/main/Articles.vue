@@ -1,35 +1,31 @@
 <template>
-    <el-container>
-        <el-main>
-            <div style="padding-left: 10%; padding-right: 10%; margin-top: 10%;">
-                <div v-for="{ id, title, abstract, create_time, click_nums, tags, comments } in this.articles"
-                     style="margin-top: 8%;">
-
-                    <el-row style="margin-bottom: 1%;">
+        <div class="main">
+            <el-row class="article_block"
+                    v-for="{ id, title, abstract, create_time, click_nums, tags, comments, img_address } in this.articles"
+            >
+                <el-col :span=6><img class="article_img" :src=img_address></el-col>
+                <el-col :span=18>
+                    <el-row class="article_row">
                         <router-link :to="{ name: 'article_detail', params: { articleid: id }}"
                                      style="font-size:18px; font-weight: bold; color: #333; text-decoration: none;">
                             {{title}}
                         </router-link>
                         <span v-for="tag in tags">
-            <el-tag size="mini" type="info">{{tag.name}}</el-tag>
-              </span>
+                                    <el-tag size="mini" type="info">{{tag.name}}</el-tag>
+                                </span>
                     </el-row>
 
-                    <el-row style="margin: 0; font-size: 15px">
-                        {{abstract}}
-                    </el-row>
+                    <el-row class="article_row">{{abstract}}</el-row>
 
-                    <el-row type="flex" style="margin-top: 1%">
+                    <el-row class="article_row" type="flex">
                         <i class="el-icon-date" style="margin-top: 2px"></i>&nbsp{{create_time}}&nbsp&nbsp
                         <i class="el-icon-view" style="margin-top: 2px"></i>&nbsp{{click_nums}}&nbsp&nbsp
                         <icon name="comments2" :scale="1.7" style="margin-top: 2px"></icon>
                         &nbsp{{comments.length}}
                     </el-row>
-                </div>
-            </div>
-        </el-main>
-        <el-aside width="20%" style="background-color: #fff"></el-aside>
-    </el-container>
+                </el-col>
+            </el-row>
+        </div>
 </template>
 
 <script>
@@ -77,17 +73,28 @@
     }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    .el-row {
-        margin-bottom: 50px;
+    .main {
+        padding: 5% 10%;
+    }
 
-    &
+    .article_block {
+        margin-bottom: 5%;
+    }
+
+    .article_row {
+        margin-bottom: 1%;
+        text-align: justify;
+    }
+
+    .article_img{
+        width: 90%;
+    }
+
     :last-child {
         margin-bottom: 0;
     }
 
-    }
     .el-col {
         border-radius: 4px;
     }
