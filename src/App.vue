@@ -24,11 +24,13 @@
 <script>
     import Left from '@/components/Left'
     import Top from '@/components/Top'
+    import Right from '@/components/Right'
 
     export default {
         name: 'app',
         components: {
             Left,
+            Right,
             Top
         }
     }

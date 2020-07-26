@@ -53,8 +53,9 @@
                 <el-button class="button" type="text" @click="comment_reverse(false)">按时间倒序</el-button>
             </el-col>
         </el-row>
+<MyLine></MyLine>
         <el-row v-for="(comment, c_index) in this.comments">
-            <div style="margin: 0 6px 10px 6px;border-top:1px dotted #C0C0C0;"></div>
+            <MyLine></MyLine>
             <!--图片-->
             <el-col :span="2" :offset="1">
                 <el-popover
@@ -120,7 +121,7 @@
                 <!--回复-->
                 <el-row v-for="(reply, r_index) in comment.comment_reply" style="margin-bottom: 0">
                     <!--线-->
-                    <div style="margin: 0 6px 10px 6px;border-top:1px dotted #C0C0C0;"></div>
+                    <MyLine></MyLine>
                     <!--头像-->
                     <el-col :span="2">
                         <el-popover
@@ -199,6 +200,8 @@
     import axios from 'axios'
     import _ from 'lodash'
     import Login from '@/components/util/Login'
+    import MyLine from '@/components/util/MyLine'
+    import Overview from "../util/Overview";
 
     export default {
         name: 'comments',
@@ -206,7 +209,9 @@
         props: ['article_id'],
 
         components: {
-            Login
+            Overview,
+            Login,
+            MyLine
         },
 
         data() {
