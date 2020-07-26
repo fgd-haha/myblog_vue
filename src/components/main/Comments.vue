@@ -53,7 +53,6 @@
                 <el-button class="button" type="text" @click="comment_reverse(false)">按时间倒序</el-button>
             </el-col>
         </el-row>
-<MyLine></MyLine>
         <el-row v-for="(comment, c_index) in this.comments">
             <MyLine></MyLine>
             <!--图片-->
