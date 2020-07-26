@@ -1,16 +1,16 @@
 <template>
-  <div class="Me" style="position: fixed; left: 8%;">
-    <img src="../assets/shuye2.jpg" style="width: 100px; margin-top: 150px">
-      <div>
-      <span>{{email}}</span>
-    </div>
-    <router-link :to="{name: 'articles'}"><img style="margin-top: 100px;" @click="jump_github()" src="./../assets/GitHub-Mark-32px.png"/></router-link>
-  </div>
+<!--  <div style="position: fixed; left: 8%;">-->
+<!--    <img src="../assets/shuye2.jpg" style="width: 100px; margin-top: 150px">-->
+<!--      <div>-->
+<!--      <span>{{email}}</span>-->
+<!--    </div>-->
+<!--    <router-link :to="{name: 'articles'}"><img style="margin-top: 100px;" @click="jump_github()" src="./../assets/GitHub-Mark-32px.png"/></router-link>-->
+<!--  </div>-->
 </template>
 
 <script>
   export default {
-    name: 'Me',
+    name: 'Left',
     data() {
       return {
         name: 'fgd',
@@ -25,6 +25,3 @@
   }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-</style>

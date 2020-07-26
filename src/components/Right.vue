@@ -1,5 +1,5 @@
 <template>
-    <div class="rigth">
+    <div class="rigth" />
 </template>
 
 <script>
