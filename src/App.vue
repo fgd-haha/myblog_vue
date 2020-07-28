@@ -50,14 +50,14 @@
 
 <style scoped>
     .el-header, .el-footer {
-        background-color: #fff;
+        background-color: #e6e6e6;
         color: #333;
         text-align: right;
         line-height: 60px;
     }
 
     .el-aside {
-        background-color: #fff;
+        background-color: #e6e6e6;
         color: #333;
         text-align: center;
     }

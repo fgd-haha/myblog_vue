@@ -1,8 +1,8 @@
 <template>
     <div class="top">
-        <el-row>
-            <el-col class="character" :span=4>范国栋的博客</el-col>
-            <el-col :span=20>
+        <el-row type="flex" style="background-color: #fff">
+            <el-col class="character" :span=4>hahaha</el-col>
+            <el-col :span=18>
                 <el-menu class="menu" :default-active="$route.path" :router="true" mode="horizontal">
                     <el-menu-item index="1" :route="{ name: 'articles'}" @click="reload">首页</el-menu-item>
 
@@ -27,11 +27,16 @@
                             </el-menu-item>
                         </div>
                     </el-submenu>
-
                 </el-menu>
             </el-col>
         </el-row>
-        <MyLine></MyLine>
+
+        <el-row>
+            <el-col :span=20 :offset=2>
+                <MyLine></MyLine>
+            </el-col>
+        </el-row>
+
     </div>
 </template>
 
@@ -80,16 +85,22 @@
 <style scoped>
     .top {
         position: fixed;
-        left: 25%;
-        width: 50%;
+        left: 20%;
+        width: 60%;
         z-index: 1000;
-        /*background-color: #5daf34;*/
+        /*background-color: #e6e6e6;*/
     }
 
     .character {
-        text-align: left;
+        text-align: right;
         font-size: x-large;
         background-color: #fff;
+    }
+
+    .small_text {
+        text-align: left;
+        font-size: small;
+        background-color: #5daf34;
     }
 
     .menu {
