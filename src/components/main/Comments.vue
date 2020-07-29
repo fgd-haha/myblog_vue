@@ -367,12 +367,12 @@
                             }
                         }
                         this.comments = comments;
+                        this.get_guests();
                     }
                 )
                 .catch(error => {
                     console.log('获取评论失败');
                 });
-            this.get_guests();
 
             axios.get(this.baseurl + 'api/oauth/guest/?token=' + this.guest.token)
                 .then(response => {
