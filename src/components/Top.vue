@@ -1,5 +1,5 @@
 <template>
-    <div class="top">
+    <div>
         <el-row type="flex" style="background-color: #fff">
             <el-col class="character" :span=4>hahaha</el-col>
             <el-col :span=18>
@@ -50,6 +50,7 @@
         data() {
             return {
                 baseurl: this.GLOBAL.domain,
+                isphone: this.GLOBAL.isphone(),
                 classifications: [],
                 tags: [],
             }
@@ -83,14 +84,6 @@
 </script>
 
 <style scoped>
-    .top {
-        position: fixed;
-        left: 20%;
-        width: 60%;
-        z-index: 1000;
-        /*background-color: #e6e6e6;*/
-    }
-
     .character {
         text-align: right;
         font-size: x-large;

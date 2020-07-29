@@ -66,7 +66,7 @@
 
     .overview {
         margin-bottom: 50px;
-        margin-top: 50px
+        margin-top: 70px;
     }
 
     .comments {

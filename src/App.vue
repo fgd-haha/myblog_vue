@@ -1,17 +1,17 @@
 <template>
     <div id="app">
         <el-container>
-            <el-header>
+            <el-header v-bind:class="{ some_top: !isphone, full_top: isphone}">
                 <top></top>
             </el-header>
             <el-container>
-                <el-aside width="20%">
+                <el-aside v-if=!isphone width="20%">
                     <Left></Left>
                 </el-aside>
                 <el-main>
                     <router-view></router-view>
                 </el-main>
-                <el-aside width="20%">
+                <el-aside v-if=!isphone width="20%">
                     <Right></Right>
                 </el-aside>
             </el-container>
@@ -26,13 +26,20 @@
     import Top from '@/components/Top'
     import Right from '@/components/Right'
 
+
     export default {
         name: 'app',
         components: {
             Left,
             Right,
             Top
-        }
+        },
+        data() {
+            return {
+                isphone: this.GLOBAL.isphone(),
+            }
+        },
+
     }
 </script>
 
@@ -54,6 +61,7 @@
         color: #333;
         text-align: right;
         line-height: 60px;
+        padding: 0;
     }
 
     .el-aside {
@@ -69,5 +77,20 @@
         text-align: left;
         padding: 0;
         /*line-height: 50px;*/
+    }
+
+    .some_top {
+        position: fixed;
+        left: 20%;
+        width: 60%;
+        z-index: 1000;
+        /*background-color: #e6e6e6;*/
+    }
+
+    .full_top {
+        position: fixed;
+        width: 100%;
+        z-index: 1000;
+        /*background-color: #e6e6e6;*/
     }
 </style>
