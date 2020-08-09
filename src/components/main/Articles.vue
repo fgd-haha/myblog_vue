@@ -75,7 +75,7 @@
 
 <style scoped>
     .main {
-        padding: 5% 10%;
+        padding: 10% 10%;
     }
 
     .article_block {

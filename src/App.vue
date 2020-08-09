@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div id="app" ref="scrollTarget" class="scroll" style="height: 100%; overflow: auto">
         <el-container>
             <el-header v-bind:class="{ some_top: !isphone, full_top: isphone}">
                 <top></top>
@@ -10,12 +10,16 @@
                 </el-aside>
                 <el-main>
                     <router-view></router-view>
+                    <div style="height: 100px; width: 100%">
+                        <el-backtop target=".scroll">
+                            <span>up</span>
+                        </el-backtop>
+                    </div>
                 </el-main>
-                <el-aside v-if=!isphone width="20%">
+                <el-aside v-if=!isphone width="calc(120% - 100vw)">
                     <Right></Right>
                 </el-aside>
             </el-container>
-
         </el-container>
     </div>
 </template>
