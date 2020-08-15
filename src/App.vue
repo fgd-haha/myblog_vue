@@ -1,6 +1,6 @@
 <template>
     <div id="app" ref="scrollTarget" class="scroll" style="height: 100%; overflow: auto">
-        <el-container>
+        <el-container class="container">
             <el-header v-bind:class="{ some_top: !isphone, full_top: isphone}">
                 <top></top>
             </el-header>
@@ -96,5 +96,11 @@
         width: 100%;
         z-index: 1000;
         /*background-color: #e6e6e6;*/
+    }
+
+    .container {
+        min-height: 100%;
+        min-width: 100%;
+        padding: 0;
     }
 </style>
