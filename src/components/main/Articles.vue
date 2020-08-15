@@ -42,7 +42,6 @@
             }
         },
         methods: {
-
             get_time: function () {
                 for (let i = 0; i < this.articles.length; i++) {
                     var time = this.articles[i].create_time;
@@ -50,6 +49,10 @@
                     this.articles[i].create_time = time;
                 }
             }
+        },
+
+        beforeCreate() {
+            document.title = 'hahaha的备忘录';
         },
 
         created() {

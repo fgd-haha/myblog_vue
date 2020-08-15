@@ -3,12 +3,12 @@
     <div ref="page" class="detail">
         <!--时间 点击 评论数 子组件-->
         <Overview class="overview"
-                  :create_time="this.article.create_time"
-                  :click_nums="this.article.click_nums"
-                  :comments_num="this.article.comments_num"></Overview>
+                  :create_time="article.create_time"
+                  :click_nums="article.click_nums"
+                  :comments_num="article.comments_num"></Overview>
 
         <!--博客主体-->
-        <vue-markdown :source="article.content"  v-highlight></vue-markdown>
+        <vue-markdown :source="article.content" v-highlight></vue-markdown>
 
         <!--评论子组件-->
         <Comments class="comments" :article_id="article_id"></Comments>
@@ -47,6 +47,7 @@
                 .then(response => {
                     this.article = (response.data);
                     this.article.create_time = this.article.create_time.replace(/T/, ' ').replace(/-/g, '.').substr(0, 10);
+                    document.title = this.article.title;
                 })
                 .catch(error => {
                     console.log(error);
