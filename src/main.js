@@ -33,24 +33,23 @@ Vue.component('vue-markdown', VueMarkdown);
 Vue.component('icon', Icon);
 
 Vue.directive('highlight', function (el, binding) {
-  setTimeout(function () {
-    let blocks = el.querySelectorAll('pre code');
-    blocks.forEach((block) => {
-      hljs.highlightBlock(block)
-    });
-  }, 1);
+    setTimeout(function () {
+        let blocks = el.querySelectorAll('pre code');
+        blocks.forEach((block) => {
+            hljs.highlightBlock(block)
+        });
+    }, 1);
 });
 
 let _ = require('lodash');
 
-
 new Vue({
-  el: '#app',
-  router,
-  components: {
-    App
-  },
-  template: '<App/>',
-  render: h => h(App)
+    el: '#app',
+    router,
+    components: {
+        App
+    },
+    template: '<App/>',
+    render: h => h(App)
 });
 
