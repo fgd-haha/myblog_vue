@@ -107,4 +107,8 @@
         /*透明背景*/
         /*background-color:rgba(0,0,0,0);*/
     }
+
+    .el-menu {
+        border-bottom: 0;
+    }
 </style>
