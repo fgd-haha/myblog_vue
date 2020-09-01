@@ -52,7 +52,7 @@
         },
 
         beforeCreate() {
-            document.title = 'hahaha的备忘录';
+            document.title = 'HaHaHa的备忘录';
         },
 
         created() {

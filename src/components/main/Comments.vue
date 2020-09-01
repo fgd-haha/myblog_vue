@@ -3,7 +3,7 @@
         <Login :logined="logined" :baseurl="baseurl" :article_id="article_id" :guest="guest"></Login>
 
         <!--评论框-->
-        <div style="margin-bottom: 10%;">
+        <div class="text_area">
             <!--评论框-->
             <el-row>
                 <el-col :span="12">
@@ -26,7 +26,7 @@
 
 
             <!--评论按钮-->
-            <div id="comment_block" style="display:none;">
+            <div id="comment_block" class="comment_button">
                 <el-row>
                     <el-col :span="2" :offset="18">
                         <el-button @click="cancle_comment()" type="text" icon="el-icon-close" round size="mini">
@@ -45,12 +45,12 @@
 
         <!--  评论列表-->
         <el-row type="flex" justify="space-between">
-            <el-col style="font-size: medium; font-weight: 600">
-                {{this.comments.length}}条评论/{{this.comment_guest_num}}人参与评论
+            <el-col :span=12 class="comment_list_sum">
+                {{ this.comments.length }}条评论/{{ this.comment_guest_num }}人参与评论
             </el-col>
-            <el-col :span="8">
-                <el-button class="button" type="text" @click="comment_reverse(true)">按时间正序</el-button>
-                <el-button class="button" type="text" @click="comment_reverse(false)">按时间倒序</el-button>
+            <el-col :span=12 class="text_right">
+                <el-button class="button" type="text" @click="comment_reverse(true)">按时间倒序</el-button>
+                <el-button class="button" type="text" @click="comment_reverse(false)">按时间正序</el-button>
             </el-col>
         </el-row>
         <el-row v-for="(comment, c_index) in this.comments">
@@ -67,24 +67,24 @@
             <!--评论-->
             <el-col :span="21">
                 <!--昵称-->
-                <el-row style="color:#909399;">{{comment.guest.nick}}</el-row>
+                <el-row>{{ comment.guest.nick }}</el-row>
                 <!--评论内容-->
-                <el-row style="font-size: small; margin: 0;">
+                <el-row class="content">
                     <vue-markdown v-highlight :source="comment.content"></vue-markdown>
                 </el-row>
                 <!--评论时间，回复按钮-->
-                <el-row style="margin-bottom: 0; color: #909399">
-                    {{comment.create_time.replace(/T/, ' ').replace(/-/g, '.').substr(0, 19)}} ·
+                <el-row class="light_color">
+                    {{ comment.create_time.replace(/T/, ' ').replace(/-/g, '.').substr(0, 19) }} ·
                     <el-popover placement="right" trigger="click" width="1000" v-model="comment.show">
                         <el-button type="text" icon="el-icon-edit"
-                                   style="color:#909399"
+                                   class="light_color"
                                    slot="reference"
                                    :disabled="!logined"
                                    @click="comment.show=true">回复
                         </el-button>
 
                         <div id="reply_block">
-                            <el-row style="margin-bottom: 0">
+                            <el-row>
                                 <el-col :span="12">
                                     <el-input type="textarea"
                                               :autosize="{ minRows: 5, maxRows: 40}"
@@ -92,7 +92,6 @@
                                               v-model.lazy="textarea_reply_1" @input="update_textarea()"
                                               auto-complete="true"
                                               autofocus="true"
-                                              style="background-color: #f7f7f7"
                                     >
                                     </el-input>
                                 </el-col>
@@ -100,7 +99,7 @@
                                     <vue-markdown v-highlight :source="textarea_reply_2"></vue-markdown>
                                 </el-col>
                             </el-row>
-                            <el-row style="margin-bottom: 0; margin-top: 0">
+                            <el-row>
                                 <el-col :span="2" :offset="18">
                                     <el-button @click="quxiao(c_index, null)" type="text"
                                                icon="el-icon-close" round size="mini">取消
@@ -118,7 +117,7 @@
                     </el-popover>
                 </el-row>
                 <!--回复-->
-                <el-row v-for="(reply, r_index) in comment.comment_reply" style="margin-bottom: 0">
+                <el-row v-for="(reply, r_index) in comment.comment_reply">
                     <!--线-->
                     <MyLine></MyLine>
                     <!--头像-->
@@ -134,27 +133,27 @@
                     <el-col :span="22">
                         <!--昵称-->
                         <el-row>
-                            <span style="color: #909399">{{reply.guest.nick}}</span>
+                            <span>{{ reply.guest.nick }}</span>
                             <icon name="review" :scale="2"></icon>
-                            <span style="color: #909399">{{reply.to.nick}}</span>
+                            <span>{{ reply.to.nick }}</span>
                         </el-row>
                         <!--回复内容-->
-                        <el-row style="font-size: small; margin: 0">
+                        <el-row class="content">
                             <vue-markdown v-highlight :source="reply.content"></vue-markdown>
                         </el-row>
                         <!--回复时间,按钮-->
-                        <el-row style="margin-bottom: 0; color: #909399;">
-                            {{reply.create_time.replace('T', ' ').replace(/-/g, '.').substr(0, 19)}} ·
+                        <el-row class="light_color">
+                            {{ reply.create_time.replace('T', ' ').replace(/-/g, '.').substr(0, 19) }} ·
                             <el-popover placement="right" trigger="click" width="1000" v-model="reply.show">
                                 <el-button type="text" icon="el-icon-edit"
-                                           style="color:#909399"
+                                           class="light_color"
                                            slot="reference"
                                            :disabled="!logined"
                                            @click="reply.show=true">回复
                                 </el-button>
 
                                 <div>
-                                    <el-row style="margin-bottom: 0">
+                                    <el-row>
                                         <el-col :span="12">
                                             <el-input type="textarea"
                                                       :autosize="{ minRows: 5, maxRows: 40}"
@@ -169,7 +168,7 @@
                                             <vue-markdown v-highlight :source="textarea_reply_2"></vue-markdown>
                                         </el-col>
                                     </el-row>
-                                    <el-row style="margin-top: 0; margin-bottom: 0">
+                                    <el-row>
                                         <el-col :span="2" :offset="18">
                                             <el-button @click="quxiao(c_index, r_index)"
                                                        type="text"
@@ -390,5 +389,24 @@
 </script>
 
 <style scoped>
+    .text_area {
+        margin-bottom: 10%;
+    }
 
+    .comment_button {
+        display:none;
+    }
+    .comment_list_sum {
+        font-size: medium; font-weight: 600;
+    }
+    .text_right {
+        text-align: right;
+    }
+    .content {
+        padding: 2% 0 0;
+    }
+    .light_color {
+        color:#909399;
+        font-size: xx-small;
+    }
 </style>

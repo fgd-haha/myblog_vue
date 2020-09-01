@@ -1,7 +1,9 @@
 <template>
     <div>
         <el-row type="flex" style="background-color: #fff">
-            <el-col class="character" :span=4>hahaha</el-col>
+            <el-col :span=4>
+                <router-link class="character" :to="{ name: 'articles'}" :underline="false">HaHaHa</router-link>
+            </el-col>
             <el-col :span=18>
                 <el-menu class="menu" :default-active="$route.path" :router="true" mode="horizontal">
                     <el-menu-item index="1" :route="{ name: 'articles'}" @click="reload">首页</el-menu-item>
@@ -12,7 +14,7 @@
                             <el-menu-item :index="'2-' + classification.id"
                                           :route="{ name: 'articles', query: {classificationid: classification.id }}"
                                           @click="reload">
-                                {{classification.name}}
+                                {{ classification.name }}
                             </el-menu-item>
                         </div>
                     </el-submenu>
@@ -23,7 +25,7 @@
                             <el-menu-item :index="'3-' + tag.id"
                                           :route="{ name: 'articles', query: { tagid: tag.id}}"
                                           @click="reload">
-                                {{tag.name}}
+                                {{ tag.name }}
                             </el-menu-item>
                         </div>
                     </el-submenu>
@@ -88,6 +90,8 @@
         text-align: right;
         font-size: x-large;
         background-color: #fff;
+        color: #000000;
+        text-decoration: none;
     }
 
     .small_text {
