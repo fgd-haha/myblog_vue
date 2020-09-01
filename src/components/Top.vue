@@ -108,7 +108,8 @@
         /*background-color:rgba(0,0,0,0);*/
     }
 
-    .el-menu {
+    .el-menu.el-menu--horizontal {
         border-bottom: 0;
     }
+
 </style>
