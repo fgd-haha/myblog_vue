@@ -2,11 +2,12 @@
         <div class="main">
             <el-row class="article_block"
                     v-for="{ id, title, abstract, create_time, click_nums, tags, comments, img_address } in this.articles"
+                    @click.native="to_detail(id)"
             >
-                <el-col :span=6><img class="article_img" :src=img_address></el-col>
+                <el-col :span=6><img class="article_img" :src=img_address alt="加载图片失败-_-"></el-col>
                 <el-col :span=18>
                     <el-row class="article_row">
-                        <router-link :to="{ name: 'article_detail', params: { articleid: id }}"
+                        <router-link :to="{ name: 'article_detail', params: { 'articleid': id }}"
                                      style="font-size:18px; font-weight: bold; color: #333; text-decoration: none;">
                             {{title}}
                         </router-link>
@@ -48,6 +49,11 @@
                     time = time.replace('T', ' ').substr(0, 10);
                     this.articles[i].create_time = time;
                 }
+            },
+
+            to_detail: function (articleid) {
+                console.log('go to ' + articleid);
+                this.$router.push({ name: 'article_detail', params: { 'articleid': articleid }})
             }
         },
 
