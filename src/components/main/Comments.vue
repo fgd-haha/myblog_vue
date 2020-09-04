@@ -91,7 +91,7 @@
                                               placeholder="github账号或微信账号登录后评论，支持markdown"
                                               v-model.lazy="textarea_reply_1" @input="update_textarea()"
                                               auto-complete="true"
-                                              autofocus=
+                                              autofocus="autofocus"
                                     >
                                     </el-input>
                                 </el-col>
@@ -253,7 +253,8 @@
             },
 
             display_comment_block: function () {
-                document.getElementById("comment_block").style.display = "";
+                console.log('display_comment_block');
+                document.getElementById("comment_block").style.display = "inline";
             },
 
             cancle_comment: function () {
