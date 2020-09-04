@@ -92,6 +92,7 @@
 
     .article_img{
         width: 90%;
+        max-height: 150px;
     }
 
     :last-child {
