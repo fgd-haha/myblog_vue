@@ -8,11 +8,7 @@
         let clientWidth = document.documentElement.clientWidth || document.body.clientWidth;
         let client_height = document.documentElement.clientHeight || document.body.clientHeight;
         console.log(client_height, clientWidth);
-        if (clientWidth < 1079) {
-            return true;
-        } else  {
-            return false;
-        }
+        return clientWidth < 1079;
     }
 
     export default {

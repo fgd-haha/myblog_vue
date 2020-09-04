@@ -94,12 +94,6 @@
         text-decoration: none;
     }
 
-    .small_text {
-        text-align: left;
-        font-size: small;
-        background-color: #5daf34;
-    }
-
     .menu {
         display: flex;
         justify-content: flex-end;

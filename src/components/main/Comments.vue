@@ -60,8 +60,8 @@
                 <el-popover
                     placement="right"
                     trigger="click">
-                    <img :src=comment.guest.img>
-                    <img :src=comment.guest.img width="50px" slot="reference">
+                    <img :src=comment.guest.img alt="加载图片失败-_-">
+                    <img :src=comment.guest.img width="50px" slot="reference" alt="加载图片失败-_-">
                 </el-popover>
             </el-col>
             <!--评论-->
@@ -91,7 +91,7 @@
                                               placeholder="github账号或微信账号登录后评论，支持markdown"
                                               v-model.lazy="textarea_reply_1" @input="update_textarea()"
                                               auto-complete="true"
-                                              autofocus="true"
+                                              autofocus=
                                     >
                                     </el-input>
                                 </el-col>
@@ -125,8 +125,8 @@
                         <el-popover
                             placement="right"
                             trigger="click">
-                            <img :src=reply.guest.img>
-                            <img :src=reply.guest.img width="50px" slot="reference">
+                            <img :src=reply.guest.img alt="加载图片失败-_-">
+                            <img :src=reply.guest.img width="50px" slot="reference" alt="加载图片失败-_-">
                         </el-popover>
                     </el-col>
 
@@ -134,7 +134,7 @@
                         <!--昵称-->
                         <el-row>
                             <span>{{ reply.guest.nick }}</span>
-                            <icon name="review" :scale="2"></icon>
+                            <vue-svg-icon name="review" :scale="2"></vue-svg-icon>
                             <span>{{ reply.to.nick }}</span>
                         </el-row>
                         <!--回复内容-->
@@ -160,7 +160,7 @@
                                                       placeholder="github账号或微信账号登录后评论，支持markdown"
                                                       v-model.lazy="textarea_reply_1" @input="update_textarea()"
                                                       auto-complete="true"
-                                                      autofocus="true"
+                                                      autofocus="autofocus"
                                             >
                                             </el-input>
                                         </el-col>
@@ -199,7 +199,7 @@
     import _ from 'lodash'
     import Login from '@/components/util/Login'
     import MyLine from '@/components/util/MyLine'
-    import Overview from "../util/Overview";
+    import Overview from "@/components/util/Overview";
 
     export default {
         name: 'comments',
@@ -329,11 +329,11 @@
             },
 
             get_guests: function () {
-                var comments = this.comments;
+                let comments = this.comments;
 
-                for (var i = 0; i < comments.length; i++) {
+                for (let i = 0; i < comments.length; i++) {
                     this.comment_guests.add(comments[i].guest.uid);
-                    for (var j = 0; j < comments[i].comment_reply.length; j++) {
+                    for (let j = 0; j < comments[i].comment_reply.length; j++) {
                         this.comment_guests.add(comments[i].comment_reply[j].guest.uid);
                     }
                 }
@@ -357,11 +357,11 @@
 
             axios.get(this.baseurl + 'api/comment/get/', {params: {'article_id': this.article_id}})
                 .then(response => {
-                        var comments = response.data;
+                        let comments = response.data;
 
-                        for (var i = 0; i < comments.length; i++) {
+                        for (let i = 0; i < comments.length; i++) {
                             comments[i]['show'] = false;
-                            for (var j = 0; j < comments[i]['comment_reply'].length; j++) {
+                            for (let j = 0; j < comments[i]['comment_reply'].length; j++) {
                                 comments[i]['comment_reply'][j]['show'] = false;
                             }
                         }
@@ -370,7 +370,7 @@
                     }
                 )
                 .catch(error => {
-                    console.log('获取评论失败');
+                    console.log('获取评论失败:' + error);
                 });
 
             axios.get(this.baseurl + 'api/oauth/guest/?token=' + this.guest.token)
@@ -380,7 +380,7 @@
                         this.logined = this.guest.islogin;
                     }
                 }).catch(error => {
-                console.log('未登录');
+                console.log('未登录:'+error);
             });
         },
 

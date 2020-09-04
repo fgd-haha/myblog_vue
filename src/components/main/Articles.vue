@@ -21,7 +21,7 @@
                     <el-row class="article_row" type="flex">
                         <i class="el-icon-date" style="margin-top: 2px"></i>&nbsp{{create_time}}&nbsp&nbsp
                         <i class="el-icon-view" style="margin-top: 2px"></i>&nbsp{{click_nums}}&nbsp&nbsp
-                        <icon name="comments2" :scale="1.7" style="margin-top: 2px"></icon>
+                        <vue-svg-icon name="comments2" :scale="1.7" style="margin-top: 2px"></vue-svg-icon>
                         &nbsp{{comments.length}}
                     </el-row>
                 </el-col>
@@ -45,7 +45,7 @@
         methods: {
             get_time: function () {
                 for (let i = 0; i < this.articles.length; i++) {
-                    var time = this.articles[i].create_time;
+                    let time = this.articles[i].create_time;
                     time = time.replace('T', ' ').substr(0, 10);
                     this.articles[i].create_time = time;
                 }

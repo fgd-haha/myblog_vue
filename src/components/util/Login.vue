@@ -3,7 +3,7 @@
         <!--登录按钮-->
         <el-row v-if=!logined>
             <div class="flex_center" @click="login()">
-                <img src="@/assets/GitHub-Mark-32px.png"/>
+                <img src="@/assets/GitHub-Mark-32px.png" alt="加载图片失败-_-"/>
                 <el-button class="login_text" type="text">登录</el-button>
             </div>
         </el-row>
@@ -13,12 +13,12 @@
                 <el-popover
                     placement="right"
                     trigger="click">
-                    <img :src=guest.img>
-                    <img :src=guest.img width="50px" slot="reference">
+                    <img :src=guest.img alt="加载图片失败-_-">
+                    <img :src=guest.img width="50px" slot="reference" alt="加载图片失败-_-">
                 </el-popover>
             </el-col>
             <el-col class="flex_center" :span="20">
-                {{guest.nick}}
+                {{ guest.nick }}
             </el-col>
         </el-row>
     </div>
