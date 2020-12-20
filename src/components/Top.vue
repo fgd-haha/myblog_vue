@@ -2,7 +2,7 @@
     <div>
         <el-row type="flex" style="background-color: #fff">
             <el-col :span=4>
-                <router-link class="character" :to="{ name: 'articles'}" :underline="false">HaHaHa</router-link>
+                <span class="character" @click="to_articles()" :underline="false">HaHaHa</span>
             </el-col>
             <el-col :span=18>
                 <el-menu class="menu" :default-active="$route.path" :router="true" mode="horizontal">
@@ -60,7 +60,12 @@
         methods: {
             reload: function () {
                 this.$router.go(0)
+            },
+            to_articles: function () {
+                this.$router.push({name: 'articles', query: {}})
+                this.$router.go(0)
             }
+
         },
 
         created() {
@@ -92,6 +97,7 @@
         background-color: #fff;
         color: #000000;
         text-decoration: none;
+        cursor:pointer;
     }
 
     .menu {

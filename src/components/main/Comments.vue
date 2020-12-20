@@ -60,8 +60,8 @@
                 <el-popover
                     placement="right"
                     trigger="click">
-                    <img :src=comment.guest.img alt="加载图片失败-_-">
-                    <img :src=comment.guest.img width="50px" slot="reference" alt="加载图片失败-_-">
+                    <img :src=comment.guest.img :onerror="errorUserPhoto">
+                    <img :src=comment.guest.img width="50px" slot="reference" :onerror="errorUserPhoto">
                 </el-popover>
             </el-col>
             <!--评论-->
@@ -125,8 +125,8 @@
                         <el-popover
                             placement="right"
                             trigger="click">
-                            <img :src=reply.guest.img alt="加载图片失败-_-">
-                            <img :src=reply.guest.img width="50px" slot="reference" alt="加载图片失败-_-">
+                            <img :src=reply.guest.img :onerror="errorUserPhoto">
+                            <img :src=reply.guest.img width="50px" slot="reference" :onerror="errorUserPhoto">
                         </el-popover>
                     </el-col>
 
@@ -214,6 +214,7 @@
 
         data() {
             return {
+                errorUserPhoto: this.GLOBAL.errorUserPhoto,
                 comments: [],
                 baseurl: this.GLOBAL.domain,
                 detail_url: '',
